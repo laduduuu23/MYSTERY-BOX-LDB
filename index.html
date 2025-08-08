@@ -1,0 +1,2341 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>MYSTERY BOX KEMERDEKAAN LDBPLAY</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800&display=swap" rel="stylesheet">
+  <style>
+    /* ====== PERFORMA OPTIMALISASI GLOBAL ====== */
+    * {
+      box-sizing: border-box;
+    }
+    html {
+      /* Smooth scrolling dan optimalisasi rendering */
+      scroll-behavior: smooth;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      text-rendering: optimizeLegibility;
+      /* Reduce reflows */
+      -webkit-transform: translateZ(0);
+      transform: translateZ(0);
+    }
+    body {
+      /* Hardware acceleration untuk animasi yang lebih smooth */
+      transform: translateZ(0);
+      backface-visibility: hidden;
+      perspective: 1000px;
+      /* Reduce paint dan layout thrashing */
+      will-change: auto;
+      /* Better performance */
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      /* Optimize compositing */
+      transform-style: preserve-3d;
+    }
+    /* Optimalisasi untuk elemen yang sering berubah */
+    .box, .btn-main, .btn-show-history, .prize-list-btn, .win-popup, .modal {
+      /* Hardware acceleration */
+      transform: translateZ(0);
+      backface-visibility: hidden;
+      /* Isolate paint layers */
+      contain: layout style paint;
+      /* Better GPU utilization */
+      will-change: auto;
+      /* Smooth transitions */
+      transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    /* Better performance for frequently animated elements */
+    .box {
+      /* Force GPU layer for smooth hover/active states */
+      transform: translate3d(0, 0, 0);
+      /* Optimize repaints */
+      contain: strict;
+    }
+    
+    /* Reduce animation cost */
+    .particle, .flag-particle, .shine, .burst {
+      /* Hardware acceleration untuk particles */
+      transform: translateZ(0);
+      backface-visibility: hidden;
+      /* Isolate animations */
+      contain: strict;
+      will-change: auto;
+      /* GPU optimization */
+      transform-style: preserve-3d;
+    }
+    
+    :root {
+      --emerald: #ff0000;
+      --gold: #ffd700;
+      --gold-shimmer: #fffbe6;
+      --casino-bg: url('https://images.unsplash.com/photo-1587320985030-be12e4c4c4eb');
+      --box-size: min(120px, 22vw);
+      --box-gap: 2vw;
+      --font-main: 'Montserrat', Arial, sans-serif;
+      --independence-red: #ff0000;
+      --independence-white: #ffffff;
+      --royal-gold: #ffd700;
+    }
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      font-family: var(--font-main);
+      min-height: 100vh;
+      background: 
+        /* Background gambar Indonesia dari folder lokal */
+        url("vecteezy_hand-with-indonesian-flag-color-and-silhouette-of-war-plane_9274650-1.jpg") center/cover no-repeat fixed;
+      position: relative;
+      overflow-x: hidden;
+    }
+    body::before {
+      /* Epic Indonesian Independence Overlay - Kemerdekaan 80 Tahun */
+      content: "";
+      position: fixed;
+      z-index: 0;
+      inset: 0;
+      pointer-events: none;
+      background: 
+        /* Cinematic vignette with Indonesian colors */
+        radial-gradient(ellipse at center, transparent 0%, transparent 30%, rgba(255,0,0,0.1) 60%, rgba(0,0,0,0.4) 100%),
+        /* Garuda wings light effects */
+        radial-gradient(circle at 50% 20%, rgba(255, 215, 0, 0.25) 0%, transparent 40%),
+        radial-gradient(circle at 25% 40%, rgba(255, 0, 0, 0.15) 0%, transparent 35%),
+        radial-gradient(circle at 75% 60%, rgba(255, 255, 255, 0.12) 0%, transparent 30%),
+        /* Traditional batik pattern texture */
+        url("data:image/svg+xml,%3Csvg width='200' height='200' xmlns='http://www.w3.org/2000/svg'%3E%3Cdefs%3E%3Cpattern id='batik' x='0' y='0' width='40' height='40' patternUnits='userSpaceOnUse'%3E%3Ccircle cx='20' cy='20' r='8' fill='none' stroke='%23ffd700' stroke-width='0.5' opacity='0.3'/%3E%3Cpath d='M10 10 Q20 5 30 10 Q25 20 30 30 Q20 35 10 30 Q15 20 10 10' fill='none' stroke='%23ffffff' stroke-width='0.3' opacity='0.2'/%3E%3C/pattern%3E%3C/defs%3E%3Crect width='200' height='200' fill='url(%23batik)'/%3E%3C/svg%3E"),
+        /* Subtle Indonesian texture overlay */
+        url("data:image/svg+xml,%3Csvg width='150' height='150' xmlns='http://www.w3.org/2000/svg'%3E%3Cdefs%3E%3Cpattern id='indonesia' x='0' y='0' width='6' height='6' patternUnits='userSpaceOnUse'%3E%3Ccircle cx='3' cy='3' r='1' fill='%23ff0000' opacity='0.05'/%3E%3Crect x='1' y='1' width='4' height='2' fill='%23ffffff' opacity='0.03'/%3E%3C/pattern%3E%3C/defs%3E%3Crect width='150' height='150' fill='url(%23indonesia)'/%3E%3C/svg%3E");
+      opacity: 0.9;
+      /* Optimalisasi animasi untuk performa lebih baik */
+      animation: indonesianBreathing 30s ease-in-out infinite, kemerdekaan80 40s linear infinite;
+      /* Hardware acceleration */
+      transform: translateZ(0);
+      will-change: auto; /* Changed from specific properties to auto for better performance */
+      /* Additional performance optimization */
+      contain: layout style paint;
+      -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
+    }
+    
+    /* ====== OPTIMALISASI ANIMASI UNTUK PERFORMA ====== */
+    /* Epic Indonesian Independence Animations */
+    @keyframes indonesianBreathing {
+      0%, 100% { 
+        opacity: 0.9; 
+        transform: translateZ(0) scale(1); 
+      }
+      50% { 
+        opacity: 1; 
+        transform: translateZ(0) scale(1.01); 
+      }
+    }
+    
+    @keyframes kemerdekaan80 {
+      0% { 
+        background-position: 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%; 
+      }
+      25% { 
+        background-position: 25% 25%, 15% 15%, 35% 5%, 45% 25%, 20% 10%; 
+      }
+      50% { 
+        background-position: 50% 50%, 30% 30%, 70% 10%, 90% 50%, 40% 20%; 
+      }
+      75% { 
+        background-position: 75% 25%, 45% 15%, 105% 5%, 135% 25%, 60% 10%; 
+      }
+      100% { 
+        background-position: 100% 0%, 60% 0%, 140% 0%, 180% 0%, 80% 0%; 
+      }
+    }
+    
+    @keyframes cinematicBreathing {
+      0%, 100% { 
+        opacity: 0.8; 
+        transform: translateZ(0) scale(1); 
+      }
+      33% { 
+        opacity: 0.9; 
+        transform: translateZ(0) scale(1.005); 
+      }
+      66% { 
+        opacity: 0.7; 
+        transform: translateZ(0) scale(0.995); 
+      }
+    }
+    
+    /* ====== PARTICLES OPTIMALISASI ====== */
+    /* Subtle floating particles */
+    .particle {
+      position: fixed;
+      border-radius: 50%;
+      pointer-events: none;
+      opacity: 0.13;
+      z-index: 1;
+      /* Animasi yang lebih smooth dan ringan */
+      animation: floatOptimized 16s linear infinite;
+      background: radial-gradient(circle, #fffbe6 0%, #ffd700 60%, transparent 100%);
+      /* Hardware acceleration */
+      transform: translateZ(0);
+      will-change: transform, opacity;
+    }
+    @keyframes floatOptimized {
+      0% { 
+        transform: translateZ(0) translateY(0) scale(1);
+        opacity: 0;
+      }
+      10% {
+        opacity: 0.13;
+      }
+      90% {
+        opacity: 0.13;
+      }
+      100% { 
+        transform: translateZ(0) translateY(-100vh) scale(1.1);
+        opacity: 0;
+      }
+    }
+    /* Indonesian flag particles with enhanced animation */
+    .flag-particle {
+      position: fixed;
+      pointer-events: none;
+      opacity: 0.25;
+      z-index: 1;
+      /* Animasi yang lebih smooth */
+      animation: flagFloatOptimized 18s linear infinite;
+      box-shadow: 0 0 8px rgba(255, 215, 0, 0.5);
+      border-radius: 3px;
+      /* Hardware acceleration */
+      transform: translateZ(0);
+      will-change: transform, opacity;
+    }
+    @keyframes flagFloatOptimized {
+      0% { 
+        transform: translateZ(0) translateY(100vh) rotate(0deg) scale(0.8); 
+        opacity: 0; 
+      }
+      15% { 
+        opacity: 0.25; 
+      }
+      85% { 
+        opacity: 0.25; 
+      }
+      100% { 
+        transform: translateZ(0) translateY(-10vh) rotate(180deg) scale(1.1); 
+        opacity: 0; 
+      }
+    }
+    /* Enhanced Indonesian Independence particles with cinematic drama */
+    .independence-sparkle {
+      position: fixed;
+      pointer-events: none;
+      opacity: 0.4;
+      z-index: 1;
+      animation: dramaticSparkleFloat 18s linear infinite;
+      filter: drop-shadow(0 0 4px rgba(255, 215, 0, 0.6));
+    }
+    @keyframes dramaticSparkleFloat {
+      0% { transform: translateY(110vh) rotate(0deg) scale(0.3); opacity: 0; }
+      15% { opacity: 0.6; }
+      85% { opacity: 0.6; }
+      100% { transform: translateY(-10vh) rotate(720deg) scale(1.8); opacity: 0; }
+    }
+    
+    /* Cinematic Wind Effect */
+    .wind-particle {
+      position: fixed;
+      pointer-events: none;
+      opacity: 0.15;
+      z-index: 1;
+      animation: windDrift 25s linear infinite;
+    }
+    @keyframes windDrift {
+      0% { transform: translateX(-10vw) translateY(50vh) rotate(0deg); opacity: 0; }
+      10% { opacity: 0.2; }
+      90% { opacity: 0.2; }
+      100% { transform: translateX(110vw) translateY(30vh) rotate(360deg); opacity: 0; }
+    }
+    /* Top right icons */
+    .corner-icons {
+      position: fixed;
+      top: 28px;
+      right: 28px;
+      z-index: 20;
+      display: flex;
+      gap: 16px;
+    }
+    .corner-icon {
+      width: 44px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background: rgba(24,28,42,0.7);
+      box-shadow: 0 0 8px 2px #ff000044;
+      transition: box-shadow .18s, transform .18s;
+      cursor: pointer;
+      border: 2px solid #ffd70022;
+    }
+    .corner-icon:hover {
+      box-shadow: 0 0 16px 4px #ffd70066, 0 0 8px 2px #ff000066;
+      transform: scale(1.09);
+    }
+    /* Main container */
+    .main-center {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      z-index: 3;
+      position: relative;
+      padding: 32px 0;
+    }
+    /* Step 1: Form */
+    .form-panel {
+      background: rgba(24,28,42,0.55);
+      border-radius: 28px;
+      box-shadow: 0 0 16px 2px #ff000044;
+      padding: 44px 32px 36px 32px;
+      max-width: 400px;
+      width: 100%;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      border: 2.5px solid #ff0000;
+      box-sizing: border-box;
+      backdrop-filter: blur(10px);
+      animation: fadeInUp .7s cubic-bezier(.4,2,.3,1);
+      filter: drop-shadow(0 0 16px #ff000033);
+    }
+    @keyframes fadeInUp {
+      0% { opacity: 0; transform: translateY(40px);}
+      100% { opacity: 1; transform: translateY(0);}
+    }
+    .form-title {
+      font-family: var(--font-main);
+      font-size: 2.1rem;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      text-align: center;
+      margin-bottom: 30px;
+      background: linear-gradient(45deg, #ff0000 0%, #ffd700 50%, #ff0000 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 0 10px #ff0000, 0 0 5px #ffd700;
+      animation: titleGlow 3s ease-in-out infinite;
+      position: relative;
+    }
+    .form-title::before {
+      content: "🇮🇩";
+      position: absolute;
+      left: -40px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 1.5rem;
+      animation: flagWave 2s ease-in-out infinite;
+    }
+    .form-title::after {
+      content: "🇮🇩";
+      position: absolute;
+      right: -40px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 1.5rem;
+      animation: flagWave 2s ease-in-out infinite 1s;
+    }
+    @keyframes titleGlow {
+      0%, 100% { text-shadow: 0 0 10px #ff0000, 0 0 5px #ffd700; }
+      50% { text-shadow: 0 0 20px #ff0000, 0 0 15px #ffd700, 0 0 25px #fff; }
+    }
+    @keyframes flagWave {
+      0%, 100% { transform: translateY(-50%) scale(1); }
+      50% { transform: translateY(-50%) scale(1.2); }
+    }
+    .form-group {
+      width: 100%;
+      margin-bottom: 22px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .form-label {
+      font-size: 1.08rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 7px;
+      text-shadow: 0 0 2px #ff0000;
+    }
+    .form-input {
+      width: 100%;
+      padding: 14px 10px;
+      border-radius: 14px;
+      border: 2px solid #ff0000;
+      background: #181c2aee;
+      color: #fff;
+      font-size: 1.08rem;
+      font-weight: 700;
+      box-shadow: inset 0 2px 12px 0 #003a2b99;
+      outline: none;
+      transition: border-color .18s, box-shadow .18s;
+      margin-bottom: 0;
+    }
+    .form-input::placeholder {
+      color: #bfc9c9;
+      font-weight: 700;
+      opacity: 1;
+      letter-spacing: 1px;
+    }
+    .form-input:focus {
+      border-color: #ffd700;
+      box-shadow: 0 0 12px 2px #ffd70044;
+      background: #232a3a;
+      transition: box-shadow .18s, border-color .18s;
+    }
+    .btn-main {
+      width: 100%;
+      padding: 15px 0;
+      border-radius: 14px;
+      background: linear-gradient(90deg, #ff0000 0%, #ffd700 100%);
+      color: #fff;
+      font-size: 1.13rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      border: none;
+      box-shadow: 0 0 16px 4px #ff000044;
+      cursor: pointer;
+      transition: box-shadow .18s, transform .18s;
+      margin-top: 10px;
+      outline: none;
+    }
+    .btn-main:hover, .btn-main:focus {
+      box-shadow: 0 0 32px 8px #ffd70044, 0 0 8px 2px #ff000044;
+      transform: scale(1.04);
+      color: #ffd700;
+      background: linear-gradient(90deg, #ffd700 0%, #ff0000 100%);
+    }
+    /* Step 2: Grid */
+    .game-panel {
+      background: rgba(24,28,42,0.55);
+      border-radius: 28px;
+      box-shadow: 0 0 16px 2px #ff000044;
+      padding: 36px 20px 28px 20px;
+      max-width: 500px;
+      width: 100%;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      border: 2.5px solid #ffd70088;
+      box-sizing: border-box;
+      backdrop-filter: blur(10px);
+      animation: fadeInUp .7s cubic-bezier(.4,2,.3,1);
+      filter: drop-shadow(0 0 16px #ffd70022);
+    }
+    .prize-list-btn {
+      display: inline-block;
+      margin-bottom: 18px;
+      padding: 10px 24px;
+      font-size: 1.05rem;
+      font-weight: 800;
+      border-radius: 12px;
+      background: linear-gradient(90deg, #ffd700 0%, #ff0000 100%);
+      color: #fff;
+      box-shadow: 0 0 8px 2px #ffd70022;
+      border: none;
+      cursor: pointer;
+      transition: box-shadow .18s, transform .18s;
+      outline: none;
+      text-shadow: 0 0 2px #ff0000;
+    }
+    .prize-list-btn:hover {
+      box-shadow: 0 0 16px 4px #ff000044, 0 0 8px 2px #ffd70044;
+      color: #ffd700;
+      transform: scale(1.03);
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, var(--box-size));
+      grid-template-rows: repeat(3, var(--box-size));
+      gap: var(--box-gap);
+      margin: 0 auto 18px auto;
+      justify-content: center;
+      align-items: center;
+      z-index: 2;
+      position: relative;
+    }
+    .box {
+      width: var(--box-size);
+      height: var(--box-size);
+      background: linear-gradient(135deg, #ff0000 0%, #ffd700 100%);
+      border-radius: 12px;
+      box-shadow: 0 0 12px 2px #ff000044;
+      border: 2.5px solid #ffd70044;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.1rem;
+      font-weight: 900;
+      color: #fff;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      transition: box-shadow .18s, transform .18s, filter .18s;
+      filter: drop-shadow(0 0 8px #ffd70022);
+      user-select: none;
+      outline: none;
+      z-index: 2;
+      animation: boxPop .7s cubic-bezier(.4,2,.3,1);
+    }
+    @keyframes boxPop {
+      0% { opacity: 0; transform: scale(0.7);}
+      100% { opacity: 1; transform: scale(1);}
+    }
+    .box .mystery-icon, .box .prize-icon {
+      width: 44px;
+      height: 44px;
+      display: block;
+      margin: 0 auto;
+      filter: drop-shadow(0 0 8px #ffd70044);
+      transition: filter .2s;
+    }
+    .box .prize-icon { display: none; }
+    .box.opened .prize-icon { display: block; }
+    .box.opened .mystery-icon { display: none; }
+    .box:hover:not(.disabled):not(.opened) {
+      box-shadow: 0 0 24px 6px #ffd70044, 0 0 12px 2px #ff000044;
+      transform: translateZ(0) scale(1.05);
+      filter: brightness(1.07);
+      /* Smooth transition yang lebih optimal */
+      transition: transform 0.2s ease-out, box-shadow 0.2s ease-out, filter 0.2s ease-out;
+    }
+    .box.opened {
+      animation: boxBurstOptimized .5s ease-out;
+      box-shadow: 0 0 32px 10px #ffd70044, 0 0 16px 4px #ff000044;
+      border-color: #ffd700;
+      filter: brightness(1.13);
+      z-index: 10;
+      /* Hardware acceleration */
+      transform: translateZ(0);
+    }
+    @keyframes boxBurstOptimized {
+      0% { 
+        transform: translateZ(0) scale(1); 
+        box-shadow: 0 0 12px 2px #ffd70044;
+      }
+      50% { 
+        transform: translateZ(0) scale(1.08); 
+        box-shadow: 0 0 32px 10px #ffd70044;
+      }
+      100% { 
+        transform: translateZ(0) scale(1.05); 
+        box-shadow: 0 0 24px 6px #ffd70044;
+      }
+    }
+    .box.disabled {
+      pointer-events: none;
+      opacity: 0.5;
+      filter: grayscale(0.5) blur(1px);
+    }
+    
+    /* ====== PRIZE AMOUNT TEXT STYLING ====== */
+    .box .prize-amount-text {
+      margin-top: 2px;
+      text-align: center;
+      line-height: 1.1;
+      word-wrap: break-word;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      max-width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 18px;
+      padding: 2px;
+    }
+    .box .prize-amount-text span {
+      display: block;
+      width: 100%;
+      text-align: center;
+      line-height: 1.1;
+      word-break: break-word;
+      overflow-wrap: break-word;
+    }
+    .box.selected {
+      border: 4px solid #ff0000;
+      box-shadow: 0 0 40px 16px #ff0000cc, 0 0 24px 8px #ffd700cc;
+      background: linear-gradient(135deg, #ff0000 0%, #ffd700 100%, #fffbe6 100%);
+      filter: brightness(1.35) drop-shadow(0 0 16px #ff0000cc);
+      z-index: 30;
+    }
+    .box .shine {
+      position: absolute;
+      top: -60%;
+      left: -60%;
+      width: 220%;
+      height: 220%;
+      background: linear-gradient(120deg, transparent 60%, #fffbe644 80%, transparent 100%);
+      opacity: 0;
+      pointer-events: none;
+      z-index: 3;
+      animation: shineAnim .6s cubic-bezier(.4,2,.3,1) forwards;
+    }
+    @keyframes shineAnim {
+      0% { opacity: 0; }
+      40% { opacity: 1; }
+      100% { opacity: 0; }
+    }
+    .box .burst {
+      position: absolute;
+      left: 50%; top: 50%;
+      width: 70px; height: 70px;
+      pointer-events: none;
+      transform: translate(-50%,-50%);
+      opacity: 0.8;
+      z-index: 4;
+      animation: burst-burst .7s cubic-bezier(.4,2,.3,1) forwards;
+    }
+    @keyframes burst-burst {
+      0% { opacity: 0; transform: translate(-50%,-50%) scale(0.5);}
+      60% { opacity: 1; transform: translate(-50%,-50%) scale(1.2);}
+      100% { opacity: 0; transform: translate(-50%,-50%) scale(1);}
+    }
+    /* Win Popup */
+    .win-popup-bg {
+      position: fixed;
+      inset: 0;
+      background: rgba(24,28,42,0.92);
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: fadeIn .3s;
+    }
+    @keyframes fadeIn {
+      0% { opacity: 0;}
+      100% { opacity: 1;}
+    }
+    .win-popup {
+      background: linear-gradient(135deg, #232a3a 0%, #ffd700 100%);
+      border-radius: 24px;
+      box-shadow: 0 0 32px 8px #ffd70044, 0 0 16px 4px #0066ff44;
+      padding: 38px 24px 30px 24px;
+      min-width: 280px;
+      max-width: 90vw;
+      text-align: center;
+      position: relative;
+      border: 2.5px solid #ffd700;
+      animation: popupScale .5s cubic-bezier(.4,2,.3,1);
+      filter: drop-shadow(0 0 16px #ffd70033);
+    }
+    @keyframes popupScale {
+      0% { transform: scale(0.7); opacity: 0;}
+      80% { transform: scale(1.08);}
+      100% { transform: scale(1); opacity: 1;}
+    }
+    .win-popup .prize-icon {
+      width: 60px;
+      height: 60px;
+      margin-bottom: 14px;
+      display: inline-block;
+      filter: drop-shadow(0 0 8px #ffd70044);
+    }
+    .win-popup .win-title {
+      font-size: 1.7rem;
+      font-weight: 900;
+      background: linear-gradient(90deg, #ffd700 0%, #0066ff 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 0 8px #ffd700, 0 0 2px #0066ff;
+      -webkit-text-stroke: 1.5px #ffd700;
+      margin-bottom: 12px;
+      letter-spacing: 1.5px;
+    }
+    .win-popup .win-prize {
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: #ffd700;
+      text-shadow: 0 0 8px #0066ff, 0 0 2px #fff;
+      margin-bottom: 24px;
+      letter-spacing: 1px;
+    }
+    .btn-claim {
+      display: inline-block;
+      padding: 18px 48px;
+      border-radius: 18px;
+      background: linear-gradient(90deg, #ffd700 0%, #0066ff 100%);
+      color: #fff;
+      font-size: 1.2rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      border: none;
+      box-shadow: 0 0 32px 8px #ffd700, 0 0 16px 4px #0066ff;
+      cursor: pointer;
+      transition: box-shadow .2s, transform .2s;
+      outline: none;
+      margin-top: 12px;
+      text-shadow: 0 0 4px #0066ff;
+    }
+    .btn-claim:hover {
+      box-shadow: 0 0 64px 16px #ffd700, 0 0 32px 8px #0066ff;
+      color: #ffd700;
+      transform: scale(1.04);
+    }
+    /* Prize Modal & Modal History */
+    .modal-bg, .modal-history-bg {
+      position: fixed;
+      inset: 0;
+      background: rgba(24,28,42,0.92);
+      z-index: 90;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: fadeIn .3s;
+    }
+    .modal, .modal-history {
+      background: linear-gradient(135deg, #181c2a 0%, #232a3a 100%);
+      border-radius: 20px;
+      box-shadow: 0 0 32px 8px #ffd70022, 0 0 16px 4px #0066ff22;
+      padding: 32px 18px 24px 18px;
+      min-width: 320px;
+      max-width: 96vw;
+      text-align: center;
+      position: relative;
+      border: 2.5px solid #ffd700;
+      animation: popupScale .5s cubic-bezier(.4,2,.3,1);
+      filter: drop-shadow(0 0 16px #ffd70022);
+    }
+    .modal-title {
+      font-size: 1.25rem;
+      font-weight: 900;
+      background: linear-gradient(90deg, #2d254a 0%, #181c2a 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 0 6px #ffd700, 0 0 2px #0066ff;
+      -webkit-text-stroke: 1px #ffd70044;
+      margin-bottom: 8px;
+      letter-spacing: 1.1px;
+    }
+    .modal-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      margin: 0 auto 18px auto;
+      background: none;
+      box-shadow: 0 0 8px 2px #ffd70022 inset;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .modal-table th {
+      background: linear-gradient(90deg, #2d254a 0%, #181c2a 100%);
+      color: #ffd700;
+      font-size: 1.08rem;
+      font-weight: 800;
+      padding: 10px 0;
+      border-top-left-radius: 10px;
+      border-top-right-radius: 10px;
+      border-bottom: 2px solid #ffd70044;
+      letter-spacing: 1px;
+    }
+    .modal-table td {
+      font-size: 1.08rem;
+      font-weight: 700;
+      color: #fff;
+      padding: 10px 0;
+      border-bottom: 1px solid #ffd70022;
+      background: none;
+    }
+    .modal-table tr:last-child td {
+      border-bottom: none;
+    }
+    .modal-table .prize-amount {
+      color: #ffd700;
+      font-size: 1.13rem;
+      font-weight: 900;
+      letter-spacing: 1px;
+    }
+    .modal-table .prize-label {
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: #0066ff;
+      letter-spacing: 1px;
+    }
+    .btn-close-modal, .btn-close-history {
+      display: inline-block;
+      padding: 13px 36px;
+      border-radius: 14px;
+      background: linear-gradient(90deg, #0066ff 0%, #ffd700 100%);
+      color: #fff;
+      font-size: 1.08rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      border: none;
+      box-shadow: 0 0 16px 4px #0066ff44;
+      cursor: pointer;
+      transition: box-shadow .18s, transform .18s;
+      outline: none;
+      margin-top: 10px;
+      text-shadow: 0 0 2px #ffd700;
+    }
+    .btn-close-modal:hover, .btn-close-history:hover {
+      box-shadow: 0 0 32px 8px #ffd70044, 0 0 16px 4px #0066ff44;
+      color: #ffd700;
+      transform: scale(1.04);
+    }
+    /* Modal History */
+    .modal-history-title {
+      font-size: 1.18rem;
+      font-weight: 900;
+      color: #ffd700;
+      margin-bottom: 12px;
+      letter-spacing: 1px;
+      text-shadow: 0 0 4px #0066ff;
+    }
+    .modal-history-row {
+      margin-bottom: 8px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 18px;
+      justify-content: center;
+    }
+    .modal-history-label {
+      font-weight: 700;
+      color: #0066ff;
+      min-width: 90px;
+      display: inline-block;
+    }
+    .modal-history-value {
+      font-weight: 800;
+      color: #fff;
+      display: inline-block;
+    }
+    .modal-history-prize {
+      color: #ffd700;
+      font-weight: 900;
+      font-size: 1.13rem;
+      margin-left: 4px;
+    }
+    .btn-show-history {
+      display: inline-block;
+      margin: 24px auto 0 auto;
+      padding: 12px 32px;
+      border-radius: 14px;
+      background: linear-gradient(90deg, #0066ff 0%, #ffd700 100%);
+      color: #fff;
+      font-size: 1.08rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      border: none;
+      box-shadow: 0 0 12px 2px #0066ff44;
+      cursor: pointer;
+      /* Transition yang lebih smooth dan optimal */
+      transition: box-shadow 0.15s ease-out, transform 0.15s ease-out, color 0.15s ease-out;
+      outline: none;
+      text-shadow: 0 0 2px #ffd700;
+      display: none;
+      /* Hardware acceleration */
+      transform: translateZ(0);
+      will-change: transform, box-shadow;
+    }
+    .btn-show-history.active { display: block; }
+    .btn-show-history:hover {
+      box-shadow: 0 0 24px 6px #ffd70044, 0 0 8px 2px #0066ff44;
+      color: #ffd700;
+      transform: translateZ(0) scale(1.03);
+    }
+    /* Epic Indonesian Floating Symbols */
+    .floating-symbols {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 1;
+      opacity: 0.15;
+    }
+    
+    .floating-symbols .symbol {
+      position: absolute;
+      font-size: 2rem;
+      font-weight: bold;
+      animation: float 20s ease-in-out infinite;
+      filter: drop-shadow(0 0 10px #ffd70066);
+    }
+    
+    .floating-symbols .garuda { 
+      color: #ffd700; 
+      font-size: 2.5rem;
+      animation-duration: 25s;
+    }
+    .floating-symbols .flag { 
+      font-size: 3rem;
+      animation-duration: 18s;
+    }
+    .floating-symbols .star { 
+      color: #ffd700; 
+      animation-duration: 22s;
+    }
+    .floating-symbols .flame { 
+      color: #ff4757; 
+      animation-duration: 15s;
+    }
+    .floating-symbols .rice { 
+      color: #f39c12; 
+      animation-duration: 28s;
+    }
+    .floating-symbols .chain { 
+      color: #95a5a6; 
+      animation-duration: 24s;
+    }
+    .floating-symbols .tree { 
+      color: #27ae60; 
+      animation-duration: 26s;
+    }
+    .floating-symbols .wheel { 
+      color: #e74c3c; 
+      animation-duration: 20s;
+    }
+    .floating-symbols .bull { 
+      color: #8b4513; 
+      animation-duration: 30s;
+    }
+    .floating-symbols .independence { 
+      color: #ff0000; 
+      font-size: 4rem;
+      font-weight: 900;
+      animation-duration: 35s;
+      text-shadow: 0 0 20px #ffd700;
+    }
+    .floating-symbols .year { 
+      color: #ffffff; 
+      font-size: 1.8rem;
+      font-weight: 800;
+      animation-duration: 32s;
+    }
+    
+    @keyframes float {
+      0%, 100% { 
+        transform: translateY(0px) translateX(0px) rotate(0deg) scale(1);
+        opacity: 0.6;
+      }
+      25% { 
+        transform: translateY(-20px) translateX(10px) rotate(5deg) scale(1.1);
+        opacity: 0.8;
+      }
+      50% { 
+        transform: translateY(-10px) translateX(-5px) rotate(-3deg) scale(0.9);
+        opacity: 0.7;
+      }
+      75% { 
+        transform: translateY(-30px) translateX(15px) rotate(8deg) scale(1.05);
+        opacity: 0.9;
+      }
+    }
+    
+    /* Enhanced Mobile Touch & Performance Optimizations */
+    @media (hover: none) and (pointer: coarse) {
+      /* Touch device optimizations */
+      .box, .btn-main, .btn-show-history, .prize-list-btn {
+        /* Larger touch targets */
+        min-height: 48px;
+        /* Better touch feedback */
+        -webkit-tap-highlight-color: rgba(255, 215, 0, 0.3);
+        /* Smoother transitions */
+        transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      
+      /* Remove hover effects on touch devices */
+      .box:hover, .btn-main:hover, .btn-show-history:hover, .prize-list-btn:hover {
+        transform: none;
+        box-shadow: inherit;
+      }
+      
+      /* Better active states for touch */
+      .box:active, .btn-main:active, .btn-show-history:active, .prize-list-btn:active {
+        transform: scale(0.95);
+        transition: transform 0.1s ease;
+      }
+    }
+    .box, .btn-main, .btn-show-history, .prize-list-btn, .btn-close-modal, .btn-close-history, .btn-claim {
+      -webkit-touch-callout: none;
+      -webkit-tap-highlight-color: transparent;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      touch-action: manipulation;
+      transform: translateZ(0); /* Force hardware acceleration */
+      will-change: transform, opacity;
+    }
+    
+    .box:active {
+      transform: scale(0.95) translateZ(0);
+      transition: transform 0.1s cubic-bezier(.4,2,.3,1);
+    }
+    
+    /* Smooth scroll for modals */
+    .modal, .win-popup, .modal-history {
+      -webkit-overflow-scrolling: touch;
+      overscroll-behavior: contain;
+    }
+    
+    /* Enhanced mobile input experience */
+    @media (max-width: 768px) {
+      .form-input {
+        font-size: 16px; /* Prevent zoom on iOS */
+        padding: 14px 16px;
+        border-radius: 8px;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      
+      .form-input:focus {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(255, 215, 0, 0.25);
+      }
+      
+      /* Smoother button feedback */
+      .btn-main {
+        transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      
+      .btn-main:active {
+        transform: scale(0.98);
+        transition: transform 0.1s ease;
+      }
+    }
+    
+    /* ====== DESKTOP PERFORMANCE OPTIMIZATIONS ====== */
+    @media (min-width: 769px) {
+      /* Desktop-specific optimizations */
+      .box {
+        /* Smoother hover effects with better performance */
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        /* Better GPU utilization */
+        will-change: auto;
+      }
+      
+      .box:hover {
+        /* Optimized hover animation */
+        transform: translateY(-8px) scale(1.05) translateZ(0);
+        transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+      }
+      
+      /* Reduce layout thrashing on hover */
+      .btn-main, .btn-show-history, .prize-list-btn {
+        /* Pre-allocate space for transform */
+        backface-visibility: hidden;
+        transform: translateZ(0);
+        /* Smoother transitions */
+        transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      
+      .btn-main:hover, .btn-show-history:hover, .prize-list-btn:hover {
+        transform: translateY(-3px) translateZ(0);
+        transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+      }
+      
+      /* Optimize modal animations for desktop */
+      .modal, .win-popup {
+        /* Better performance for large screens */
+        contain: layout style paint;
+        transform: translateZ(0);
+      }
+      
+      /* Smooth scrolling optimization */
+      html {
+        scroll-behavior: smooth;
+      }
+      
+      /* Reduce paint complexity */
+      .grid {
+        /* Optimize grid rendering */
+        contain: layout;
+        transform: translateZ(0);
+      }
+    }
+    
+    /* Enhanced animations for mobile */
+    @keyframes mobileBoxPop {
+      0% { opacity: 0; transform: scale(0.8) translateZ(0); }
+      60% { opacity: 1; transform: scale(1.05) translateZ(0); }
+      100% { opacity: 1; transform: scale(1) translateZ(0); }
+    }
+    
+    @media (max-width: 768px) {
+      .box {
+        animation: mobileBoxPop .6s cubic-bezier(.4,2,.3,1);
+      }
+      
+      /* Improve scrolling performance on mobile */
+      .form-panel, .game-panel {
+        -webkit-overflow-scrolling: touch;
+        overscroll-behavior: contain;
+      }
+      
+      /* Optimize rendering on mobile */
+      .indonesia-decoration svg {
+        will-change: transform;
+        transform: translateZ(0);
+      }
+    }
+    @media (max-width: 768px) {
+      body {
+        font-size: 16px; /* Prevent zoom on iOS */
+        -webkit-text-size-adjust: 100%;
+      }
+      .form-panel, .game-panel, .modal, .win-popup, .modal-history {
+        padding: 12px 3vw 10px 3vw;
+        min-width: unset;
+        border-radius: 18px;
+        box-shadow: 0 0 12px 3px #ff000044, 0 0 6px 1px #ffd70044;
+        font-size: 1rem;
+        animation: fadeInUp .8s cubic-bezier(.4,2,.3,1);
+        margin: 2vw;
+        backdrop-filter: blur(4px);
+      }
+      .form-title {
+        font-size: 1.4rem;
+        margin-bottom: 20px;
+        text-shadow: 0 0 8px #ff000044;
+      }
+      .grid {
+        --box-size: min(75px, 30vw);
+        gap: 1.8vw;
+        margin-bottom: 12px;
+        justify-content: center;
+        max-width: 100%;
+        padding: 0 2vw;
+      }
+      .box {
+        font-size: 0.9rem;
+        border-radius: 10px;
+        touch-action: manipulation;
+        -webkit-tap-highlight-color: transparent;
+        /* Transition yang lebih smooth untuk mobile */
+        transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+        min-height: var(--box-size);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 2px;
+        /* Hardware acceleration */
+        transform: translateZ(0);
+        will-change: transform;
+      }
+      .box .prize-amount-text {
+        font-size: 0.9rem !important;
+        line-height: 1.1;
+        text-align: center;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        max-width: 100%;
+        padding: 1px;
+      }
+      .box .prize-amount-text span {
+        font-size: 0.9rem !important;
+        display: block;
+        max-width: 100%;
+        word-break: break-word;
+        overflow-wrap: break-word;
+        line-height: 1.1;
+      }
+      .box:active {
+        transform: translateZ(0) scale(0.95);
+      }
+      .corner-icons {
+        top: 10px;
+        right: 6px;
+        gap: 10px;
+      }
+      .btn-main, .btn-show-history, .prize-list-btn, .btn-close-modal, .btn-close-history {
+        font-size: 1rem;
+        padding: 12px 0;
+        border-radius: 12px;
+        touch-action: manipulation;
+        -webkit-tap-highlight-color: transparent;
+        /* Transition yang lebih smooth untuk mobile buttons */
+        transition: transform 0.15s ease-out, box-shadow 0.15s ease-out;
+        /* Hardware acceleration */
+        transform: translateZ(0);
+        will-change: transform;
+      }
+      .btn-main:active, .btn-show-history:active, .prize-list-btn:active, 
+      .btn-close-modal:active, .btn-close-history:active {
+        transform: translateZ(0) scale(0.98);
+      }
+      .win-popup .prize-icon {
+        width: 45px;
+        height: 45px;
+        margin-bottom: 10px;
+      }
+      .win-popup .win-title {
+        font-size: 1.2rem;
+        margin-bottom: 10px;
+      }
+      .win-popup .win-prize {
+        font-size: 1.1rem;
+        margin-bottom: 14px;
+      }
+      .btn-claim {
+        font-size: 1.1rem;
+        padding: 14px 26px;
+        border-radius: 14px;
+        margin-top: 10px;
+        touch-action: manipulation;
+        -webkit-tap-highlight-color: transparent;
+        transition: all .3s cubic-bezier(.4,2,.3,1);
+      }
+      .btn-claim:active {
+        transform: scale(0.98);
+      }
+      .modal-table th, .modal-table td {
+        font-size: 0.98rem;
+        padding: 8px 2px;
+      }
+      .modal-title {
+        font-size: 1.1rem;
+        margin-bottom: 8px;
+      }
+      .modal-history-title {
+        font-size: 1.1rem;
+        margin-bottom: 10px;
+      }
+      .modal-history-label, .modal-history-value, .modal-history-prize {
+        font-size: 0.98rem;
+      }
+      input[type="text"] {
+        font-size: 16px; /* Prevent zoom on iOS */
+        -webkit-appearance: none;
+        appearance: none;
+        border-radius: 8px;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .form-panel, .game-panel, .modal, .win-popup, .modal-history {
+        padding: 8px 2vw 6px 2vw;
+        border-radius: 12px;
+        margin: 1vw;
+      }
+      .form-title {
+        font-size: 1.2rem;
+        margin-bottom: 16px;
+      }
+      .grid {
+        --box-size: min(65px, 28vw);
+        gap: 1.2vw;
+        margin-bottom: 8px;
+        padding: 0 1vw;
+      }
+      .box {
+        font-size: 0.8rem;
+        border-radius: 8px;
+        padding: 1px;
+        min-height: var(--box-size);
+      }
+      .box .prize-amount-text {
+        font-size: 0.8rem !important;
+        line-height: 1;
+        text-align: center;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        padding: 1px;
+      }
+      .box .prize-amount-text span {
+        font-size: 0.8rem !important;
+        display: block;
+        max-width: 100%;
+        word-break: break-word;
+        overflow-wrap: break-word;
+        line-height: 1;
+      }
+      .corner-icons {
+        top: 4px;
+        right: 2px;
+        gap: 6px;
+      }
+      .corner-icons .icon {
+        width: 20px;
+        height: 20px;
+      }
+      .btn-main, .btn-show-history, .prize-list-btn, .btn-close-modal, .btn-close-history {
+        font-size: 0.95rem;
+        padding: 10px 0;
+        border-radius: 10px;
+      }
+      .win-popup .prize-icon {
+        width: 32px;
+        height: 32px;
+        margin-bottom: 6px;
+      }
+      .win-popup .win-title {
+        font-size: 1rem;
+        margin-bottom: 6px;
+      }
+      .win-popup .win-prize {
+        font-size: 0.9rem;
+        margin-bottom: 10px;
+      }
+      .btn-claim {
+        font-size: 0.9rem;
+        padding: 8px 16px;
+        border-radius: 8px;
+        margin-top: 4px;
+        touch-action: manipulation;
+        -webkit-tap-highlight-color: transparent;
+        /* Transition yang lebih smooth */
+        transition: transform 0.15s ease-out, box-shadow 0.15s ease-out;
+        /* Hardware acceleration */
+        transform: translateZ(0);
+        will-change: transform;
+      }
+      .btn-claim:active {
+        transform: translateZ(0) scale(0.98);
+      }
+      .modal-table th, .modal-table td {
+        font-size: 0.85rem;
+        padding: 5px 0;
+      }
+      .modal-title {
+        font-size: 0.85rem;
+        margin-bottom: 4px;
+      }
+      .modal-history-title {
+        font-size: 0.85rem;
+        margin-bottom: 4px;
+      }
+      .modal-history-label, .modal-history-value, .modal-history-prize {
+        font-size: 0.85rem;
+      }
+      input[type="text"] {
+        font-size: 16px; /* Prevent zoom on iOS */
+        padding: 8px 12px;
+        border-radius: 6px;
+      }
+    }
+    
+    /* Ultra Small Mobile Devices */
+    @media (max-width: 360px) {
+      .form-panel, .game-panel, .modal, .win-popup, .modal-history {
+        padding: 6px 1vw 4px 1vw;
+        border-radius: 8px;
+        margin: 0.5vw;
+      }
+      .grid {
+        --box-size: min(60px, 26vw);
+        gap: 0.8vw;
+        padding: 0 0.5vw;
+      }
+      .box {
+        font-size: 0.7rem;
+        border-radius: 6px;
+        padding: 1px;
+        min-height: var(--box-size);
+      }
+      .box .prize-amount-text {
+        font-size: 0.7rem !important;
+        line-height: 1;
+        padding: 1px;
+      }
+      .box .prize-amount-text span {
+        font-size: 0.7rem !important;
+        display: block;
+        max-width: 100%;
+        word-break: break-word;
+        overflow-wrap: break-word;
+        line-height: 1;
+      }
+      .btn-main, .btn-show-history, .prize-list-btn, .btn-close-modal, .btn-close-history {
+        font-size: 0.85rem;
+        padding: 8px 0;
+        border-radius: 6px;
+      }
+    }
+    
+    /* Landscape Mobile Optimization */
+    @media (max-height: 500px) and (orientation: landscape) {
+      .form-panel, .game-panel {
+        padding: 4px 2vw 2px 2vw;
+        max-height: 90vh;
+        overflow-y: auto;
+      }
+      .form-title {
+        font-size: 1rem;
+        margin-bottom: 8px;
+      }
+      .grid {
+        --box-size: min(45px, 20vw);
+        gap: 0.8vw;
+        margin-bottom: 4px;
+        padding: 0 1vw;
+      }
+      .box {
+        min-height: var(--box-size);
+        padding: 1px;
+      }
+      .box .prize-amount-text {
+        font-size: 0.75rem !important;
+        line-height: 1;
+        padding: 1px;
+      }
+      .box .prize-amount-text span {
+        font-size: 0.75rem !important;
+        display: block;
+        max-width: 100%;
+        word-break: break-word;
+        overflow-wrap: break-word;
+        line-height: 1;
+      }
+      .win-popup {
+        max-height: 80vh;
+        overflow-y: auto;
+      }
+    }
+    
+    /* ====== PERFORMANCE OPTIMIZATION FOR LOW-END DEVICES ====== */
+    /* Detect and optimize for slower devices */
+    @media (max-width: 320px), (max-height: 500px), (prefers-reduced-motion: reduce) {
+      /* Disable heavy background animations on weak devices */
+      body::before {
+        animation: none !important;
+        opacity: 0.6 !important;
+        background: 
+          radial-gradient(ellipse at center, transparent 0%, transparent 30%, rgba(255,0,0,0.05) 60%, rgba(0,0,0,0.2) 100%);
+      }
+      
+      /* Simplify particle effects */
+      .particle, .flag-particle, .independence-sparkle, .dramatic-sparkle {
+        display: none !important;
+      }
+      
+      /* Reduce complex shadows and effects */
+      .box, .btn-main, .prize-list-btn {
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1) !important;
+      }
+      
+      /* Faster transitions */
+      * {
+        transition-duration: 0.15s !important;
+        animation-duration: 0.3s !important;
+      }
+    }
+    
+    /* ====== ACCESSIBILITY & PERFORMANCE ====== */
+    /* Reduce motion untuk users yang sensitif terhadap animasi */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+      .particle, .flag-particle, .independence-sparkle {
+        display: none !important;
+      }
+      body::before {
+        animation: none !important;
+      }
+    }
+    
+    /* Optimize untuk device dengan memory terbatas */
+    @media (max-width: 320px), (max-height: 500px) {
+      /* Kurangi kompleksitas animasi */
+      .particle, .flag-particle {
+        display: none;
+      }
+      body::before {
+        background: 
+          radial-gradient(ellipse at center, transparent 0%, transparent 30%, rgba(255,0,0,0.1) 60%, rgba(0,0,0,0.4) 100%);
+        animation: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Enhanced Indonesian Independence Floating Elements -->
+  <div class="floating-symbols">
+    <div class="symbol garuda" style="top: 10%; left: 5%; animation-delay: 0s;">🦅</div>
+    <div class="symbol flag" style="top: 15%; left: 85%; animation-delay: 2s;">🇮🇩</div>
+    <div class="symbol star" style="top: 25%; left: 10%; animation-delay: 4s;">⭐</div>
+    <div class="symbol flame" style="top: 35%; left: 90%; animation-delay: 1s;">🔥</div>
+    <div class="symbol rice" style="top: 45%; left: 8%; animation-delay: 3s;">🌾</div>
+    <div class="symbol chain" style="top: 55%; left: 88%; animation-delay: 5s;">⛓️</div>
+    <div class="symbol tree" style="top: 65%; left: 12%; animation-delay: 2.5s;">🌳</div>
+    <div class="symbol wheel" style="top: 75%; left: 85%; animation-delay: 4.5s;">⚙️</div>
+    <div class="symbol bull" style="top: 80%; left: 15%; animation-delay: 1.5s;">🐂</div>
+    <div class="symbol independence" style="top: 20%; left: 50%; animation-delay: 3.5s;">80</div>
+    <div class="symbol year" style="top: 70%; left: 45%; animation-delay: 0.5s;">1945</div>
+    <div class="symbol year" style="top: 30%; left: 55%; animation-delay: 2.8s;">2025</div>
+  </div>
+  
+  <!-- Enhanced Indonesian Independence Cinematic Elements -->
+  <div class="indonesia-decoration">
+    <svg width="100%" height="100%" style="position: fixed; top: 0; left: 0; z-index: 0; pointer-events: none; opacity: 0.15;">
+      <defs>
+        <!-- Dramatic Wind Effect Pattern -->
+        <pattern id="wind-effect" x="0" y="0" width="300" height="200" patternUnits="userSpaceOnUse">
+          <path d="M0 100 Q50 80 100 100 Q150 120 200 100 Q250 80 300 100" stroke="#ffffff" stroke-width="1" fill="none" opacity="0.3"/>
+          <path d="M0 120 Q75 100 150 120 Q225 140 300 120" stroke="#ffd700" stroke-width="0.8" fill="none" opacity="0.4"/>
+        </pattern>
+        
+        <!-- Patriotic Symbol Pattern -->
+        <pattern id="patriotic-symbols" x="0" y="0" width="400" height="300" patternUnits="userSpaceOnUse">
+          <!-- Stylized Indonesian Eagle -->
+          <g transform="translate(200,150)" opacity="0.4">
+            <path d="M-30,-15 Q-20,-25 0,-20 Q20,-25 30,-15 Q20,-5 0,-10 Q-20,-5 -30,-15 Z" fill="#ffd700"/>
+            <circle cx="0" cy="-5" r="8" fill="none" stroke="#ff0000" stroke-width="1.5"/>
+          </g>
+          
+          <!-- Traditional Indonesian Stars -->
+          <polygon points="100,50 103,60 113,60 105,66 108,76 100,70 92,76 95,66 87,60 97,60" fill="#ffffff" opacity="0.5"/>
+          <polygon points="300,200 303,210 313,210 305,216 308,226 300,220 292,226 295,216 287,210 297,210" fill="#ffd700" opacity="0.6"/>
+        </pattern>
+        
+        <!-- Cinematic Light Rays -->
+        <linearGradient id="light-ray" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style="stop-color:#ffd700;stop-opacity:0.1"/>
+          <stop offset="50%" style="stop-color:#ffffff;stop-opacity:0.05"/>
+          <stop offset="100%" style="stop-color:#ff0000;stop-opacity:0.1"/>
+        </linearGradient>
+      </defs>
+      
+      <!-- Background Patterns -->
+      <rect width="100%" height="100%" fill="url(#wind-effect)"/>
+      <rect width="100%" height="100%" fill="url(#patriotic-symbols)"/>
+      
+      <!-- Additional Indonesian Background Elements -->
+      <g opacity="0.25">
+        <!-- Large Indonesian Flag -->
+        <rect x="20%" y="10%" width="300" height="200" fill="#ff0000"/>
+        <rect x="20%" y="60%" width="300" height="200" fill="#ffffff"/>
+        <rect x="20%" y="10%" width="300" height="400" fill="none" stroke="#ffd700" stroke-width="3"/>
+        
+        <!-- Garuda Silhouette -->
+        <g transform="translate(75%, 30%) scale(1.5)">
+          <path d="M0,-20 Q-30,-30 -50,-10 Q-30,0 -20,5 Q-10,0 0,10 Q10,0 20,5 Q30,0 50,-10 Q30,-30 0,-20 Z" fill="#000000" opacity="0.6"/>
+          <circle cx="0" cy="-10" r="8" fill="none" stroke="#ffd700" stroke-width="2"/>
+        </g>
+        
+        <!-- Traditional Batik Patterns -->
+        <g opacity="0.4">
+          <circle cx="15%" cy="70%" r="40" fill="none" stroke="#ffd700" stroke-width="2"/>
+          <circle cx="15%" cy="70%" r="25" fill="none" stroke="#ff0000" stroke-width="1.5"/>
+          <circle cx="85%" cy="25%" r="35" fill="none" stroke="#ffffff" stroke-width="2"/>
+          <circle cx="85%" cy="25%" r="20" fill="none" stroke="#ffd700" stroke-width="1"/>
+        </g>
+      </g>
+      
+      <!-- Cinematic Light Rays -->
+      <g opacity="0.15">
+        <path d="M0 0 L100% 0 L90% 100% L0 90% Z" fill="url(#light-ray)"/>
+        <path d="M100% 0 L100% 100% L80% 100% L90% 0 Z" fill="url(#light-ray)"/>
+      </g>
+      
+      <!-- Floating Patriotic Elements -->
+      <g opacity="0.2">
+        <!-- Indonesian Independence Symbols with 80th Anniversary -->
+        <g transform="translate(10%, 30%)">
+          <polygon points="0,-6 2,2 8,2 3,5 5,12 0,8 -5,12 -3,5 -8,2 -2,2" fill="#ffd700"/>
+          <text x="0" y="20" text-anchor="middle" fill="#ff0000" font-size="8" font-weight="bold">80</text>
+          <animateTransform attributeName="transform" type="translate" 
+                           values="10% 30%; 15% 25%; 10% 30%" dur="8s" repeatCount="indefinite"/>
+        </g>
+        
+        <g transform="translate(90%, 60%)">
+          <circle cx="0" cy="0" r="4" fill="none" stroke="#ff0000" stroke-width="1"/>
+          <text x="0" y="15" text-anchor="middle" fill="#ffd700" font-size="6" font-weight="bold">RI</text>
+          <animateTransform attributeName="transform" type="translate" 
+                           values="90% 60%; 85% 65%; 90% 60%" dur="10s" repeatCount="indefinite"/>
+        </g>
+        
+        <!-- Traditional Diamond Pattern with Indonesian Elements -->
+        <g transform="translate(30%, 80%)">
+          <path d="M0,-5 L5,0 L0,5 L-5,0 Z" fill="#ffffff"/>
+          <circle cx="0" cy="0" r="2" fill="#ff0000"/>
+          <animateTransform attributeName="transform" type="translate" 
+                           values="30% 80%; 35% 75%; 30% 80%" dur="12s" repeatCount="indefinite"/>
+        </g>
+        
+        <g transform="translate(70%, 20%)">
+          <path d="M0,-5 L5,0 L0,5 L-5,0 Z" fill="#ffd700"/>
+          <text x="0" y="12" text-anchor="middle" fill="#ff0000" font-size="5" font-weight="bold">17</text>
+          <animateTransform attributeName="transform" type="translate" 
+                           values="70% 20%; 65% 25%; 70% 20%" dur="9s" repeatCount="indefinite"/>
+        </g>
+        
+        <!-- Additional Indonesian Elements -->
+        <g transform="translate(50%, 15%)">
+          <text x="0" y="0" text-anchor="middle" fill="#ffd700" font-size="16" font-weight="bold" opacity="0.7">MERDEKA</text>
+          <animateTransform attributeName="transform" type="translate" 
+                           values="50% 15%; 55% 10%; 50% 15%" dur="15s" repeatCount="indefinite"/>
+        </g>
+        
+        <g transform="translate(25%, 50%)">
+          <!-- Indonesian Eagle Wings -->
+          <path d="M-15,-5 Q-25,-10 -30,-5 Q-25,0 -15,2 M15,-5 Q25,-10 30,-5 Q25,0 15,2" stroke="#ffd700" stroke-width="2" fill="none"/>
+          <circle cx="0" cy="0" r="3" fill="#ff0000"/>
+          <animateTransform attributeName="transform" type="translate" 
+                           values="25% 50%; 30% 45%; 25% 50%" dur="11s" repeatCount="indefinite"/>
+        </g>
+        
+        <g transform="translate(80%, 80%)">
+          <text x="0" y="0" text-anchor="middle" fill="#ffffff" font-size="12" font-weight="bold" opacity="0.8">1945</text>
+          <animateTransform attributeName="transform" type="translate" 
+                           values="80% 80%; 75% 85%; 80% 80%" dur="13s" repeatCount="indefinite"/>
+        </g>
+      }
+    </svg>
+  </div>
+  <!-- Floating Particles -->
+  <script>
+    // Enhanced floating particles with Indonesian independence theme
+    for(let i=0;i<15;i++){
+      const p=document.createElement('div');
+      p.className='particle';
+      p.style.width=p.style.height=(Math.random()*15+10)+'px';
+      p.style.left=(Math.random()*100)+'vw';
+      p.style.top=(Math.random()*100)+'vh';
+      
+      const colors = ['ffd700', 'ff0000', 'fffbe6', 'ffffff'];
+      const selectedColor = colors[Math.floor(Math.random()*colors.length)];
+      p.style.background=`radial-gradient(circle, #${selectedColor} 0%, transparent 70%)`;
+      p.style.animationDuration=(Math.random()*10+8)+'s';
+      p.style.opacity=Math.random()*0.3+0.15;
+      p.style.boxShadow = `0 0 ${Math.random()*10+5}px #${selectedColor}`;
+      document.body.appendChild(p);
+    }
+    
+    // Enhanced Indonesian flag particles
+    for(let i=0;i<12;i++){
+      const flag=document.createElement('div');
+      flag.className='flag-particle';
+      flag.style.width='24px';
+      flag.style.height='16px';
+      flag.style.left=(Math.random()*100)+'vw';
+      flag.style.top='110vh';
+      flag.style.background='linear-gradient(to bottom, #ff0000 0%, #ff0000 50%, #ffffff 50%, #ffffff 100%)';
+      flag.style.animationDuration=(Math.random()*8+12)+'s';
+      flag.style.animationDelay=(Math.random()*5)+'s';
+      flag.style.borderRadius='3px';
+      flag.style.border='1px solid #ffd700';
+      flag.style.boxShadow='0 0 8px rgba(255, 215, 0, 0.6)';
+      document.body.appendChild(flag);
+    }
+    
+    // Enhanced Indonesian independence sparkles (cinematic traditional symbols)
+    for(let i=0;i<18;i++){
+      const symbol=document.createElement('div');
+      symbol.className='independence-sparkle';
+      symbol.style.width='14px';
+      symbol.style.height='14px';
+      symbol.style.left=(Math.random()*100)+'vw';
+      symbol.style.top='110vh';
+      symbol.style.animationDuration=(Math.random()*10+15)+'s';
+      symbol.style.animationDelay=(Math.random()*8)+'s';
+      symbol.style.borderRadius='50%';
+      
+      // Cinematic Indonesian symbols with glow effects
+      const cinematicSymbols = [
+        // Patriotic Star with Glow
+        `background: radial-gradient(circle, #ffd700 20%, #ffff00 70%); clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%); box-shadow: 0 0 12px #ffd700, 0 0 6px #ffff00;`,
+        // Red Circle (Unity Symbol)
+        `background: radial-gradient(circle, #ff0000 30%, #ff4444 80%); border-radius: 50%; box-shadow: 0 0 10px #ff0000, 0 0 5px #ff4444;`,
+        // Golden Diamond (Archipelago)
+        `background: linear-gradient(45deg, #ffd700 0%, #ffff00 100%); transform: rotate(45deg); border-radius: 3px; box-shadow: 0 0 8px #ffd700, 0 0 4px #ffff00;`,
+        // Patriotic Burst
+        `background: radial-gradient(circle, #ff0000 20%, #ffd700 50%, #ffffff 80%); border-radius: 50%; box-shadow: 0 0 10px #ff0000, 0 0 8px #ffd700;`,
+        // White Purity Symbol  
+        `background: radial-gradient(circle, #ffffff 40%, #f0f0f0 80%); border-radius: 50%; box-shadow: 0 0 8px #ffffff, 0 0 4px #f0f0f0;`
+      ];
+      
+      symbol.style.cssText += cinematicSymbols[Math.floor(Math.random() * cinematicSymbols.length)];
+      document.body.appendChild(symbol);
+    }
+    
+    // Cinematic Wind Effect Particles
+    for(let i=0;i<8;i++){
+      const wind=document.createElement('div');
+      wind.className='wind-particle';
+      wind.style.width='60px';
+      wind.style.height='2px';
+      wind.style.left='-10vw';
+      wind.style.top=(Math.random()*60+20)+'vh';
+      wind.style.background='linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.4) 50%, transparent 100%)';
+      wind.style.animationDuration=(Math.random()*10+20)+'s';
+      wind.style.animationDelay=(Math.random()*5)+'s';
+      wind.style.borderRadius='1px';
+      wind.style.boxShadow='0 0 4px rgba(255,255,255,0.3)';
+      document.body.appendChild(wind);
+    }
+  </script>
+  <!-- Top Right Social Icons -->
+  <div class="corner-icons">
+    <a href="https://klikblg.com/wa-ldb
+" target="_blank" class="corner-icon" title="WhatsApp">
+      <!-- WhatsApp SVG -->
+      <svg width="26" height="26" viewBox="0 0 32 32" fill="none">
+        <circle cx="16" cy="16" r="16" fill="#25D366"/>
+        <path d="M24.5 21.5c-1.1.5-2.3.8-3.5.8-4.4 0-8-3.6-8-8 0-1.2.3-2.4.8-3.5l-2.3-2.3C9.1 9.7 8 12.7 8 16c0 5.5 4.5 10 10 10 3.3 0 6.3-1.1 8.5-3l-2.3-2.3z" fill="#fff"/>
+        <path d="M16 8c4.4 0 8 3.6 8 8 0 1.2-.3 2.4-.8 3.5l2.3 2.3C22.9 22.3 19.9 23.5 16 23.5c-5.5 0-10-4.5-10-10 0-3.3 1.1-6.3 3-8.5l2.3 2.3C13.6 8.3 14.8 8 16 8z" fill="#fff"/>
+      </svg>
+    </a>
+    <a href="https://klikblg.com/cuanldbplay" target="_blank" class="corner-icon" title="Telegram">
+      <!-- Telegram SVG -->
+      <svg width="26" height="26" viewBox="0 0 32 32" fill="none">
+        <circle cx="16" cy="16" r="16" fill="#0088cc"/>
+        <path d="M24.7 9.3c-.2-.2-.5-.2-.7-.1l-15 6c-.3.1-.5.4-.5.7s.2.6.5.7l3.7 1.2 1.2 3.7c.1.3.4.5.7.5.1 0 .2 0 .3-.1l6-15c.1-.2.1-.5-.1-.7zm-7.2 12.1-1-3.1 7.1-7.1-6.1 10.2zm-2.1-2.1-3.1-1 10.2-6.1-7.1 7.1z" fill="#fff"/>
+      </svg>
+    </a>
+  </div>
+  <div class="main-center">
+    <!-- Step 1: Form -->
+    <form class="form-panel" id="formPanel" autocomplete="off">
+      <div class="form-title">MYSTERY BOX KEMERDEKAAN RI KE-80</div>
+      <div class="form-group">
+        <label class="form-label" for="userId">User ID</label>
+        <input class="form-input" id="userId" name="userId" type="text" placeholder="Masukkan User ID" required maxlength="32" autocomplete="off">
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="kupon">Kode Kupon</label>
+        <input class="form-input" id="kupon" name="kupon" type="text" placeholder="Masukkan Kode Kupon" required maxlength="32" autocomplete="off">
+        <small id="kuponInfo" style="color: #ffd700; font-size: 0.8rem; margin-top: 5px; display: block;"></small>
+      </div>
+      <button type="submit" class="btn-main">LANJUTKAN</button>
+    </form>
+    <!-- Step 2: Game -->
+    <div class="game-panel" id="gamePanel" style="display:none;">
+      <button class="prize-list-btn" id="btnPrizeList"> 🇩 Lihat Hadiah Kemerdekaan</button>
+      <div class="grid" id="boxGrid"></div>
+      <button class="btn-show-history" id="btnShowHistory">Tampilkan History Kemerdekaan</button>
+    </div>
+  </div>
+  <!-- Prize Modal -->
+  <div class="modal-bg" id="modalPrizeList" style="display:none;">
+    <div class="modal">
+      <div class="modal-title">🇮🇩 Daftar Hadiah Kemerdekaan RI Ke-80 🇮🇩</div>
+      <table class="modal-table">
+        <thead>
+          <tr>
+            <th>Hadiah</th>
+            <th>Label</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="prize-amount">Rp 100.000</td><td class="prize-label">MEGA PRIZE 🇮🇩 MERDEKA</td></tr>
+          <tr><td class="prize-amount">Rp 50.000</td><td class="prize-label">SUPER GARUDA EMAS</td></tr>
+          <tr><td class="prize-amount">Rp 30.000</td><td class="prize-label">SUPER PANCASILA</td></tr>
+          <tr><td class="prize-amount">Rp 20.000</td><td class="prize-label">RARE BHINNEKA</td></tr>
+          <tr><td class="prize-amount">Rp 10.000</td><td class="prize-label">RARE NUSANTARA</td></tr>
+          <tr><td class="prize-amount">Rp 8.000</td><td class="prize-label">REGULER DIRGAHAYU</td></tr>
+          <tr><td class="prize-amount">Rp 7.000</td><td class="prize-label">REGULER PROKLAMASI</td></tr>
+          <tr><td class="prize-amount">Rp 6.000</td><td class="prize-label">REGULER AGUSTUS</td></tr>
+          <tr><td class="prize-amount">Rp 5.000</td><td class="prize-label">REGULER INDONESIA</td></tr>
+          <tr><td class="prize-amount">Rp 4.000</td><td class="prize-label">REGULER MERAH PUTIH</td></tr>
+          <tr><td class="prize-amount">Rp 3.000</td><td class="prize-label">REGULER BENDERA</td></tr>
+        </tbody>
+      </table>
+      <button class="btn-close-modal" id="btnCloseModal">Tutup</button>
+    </div>
+  </div>
+  <!-- Win Popup -->
+  <div class="win-popup-bg" id="winPopup" style="display:none;">
+    <div class="win-popup">
+      <div class="prize-icon" id="winPrizeIcon"></div>
+      <div class="win-title" id="winTitle">🇮🇩 DIRGAHAYU RI KE-80! 🎁</div>
+      <div class="win-prize" id="winPrizeText"></div>
+      <a href="https://klikblg.com/cuanldbplay" target="_blank" class="btn-claim">CLAIM HADIAH MERDEKA</a>
+    </div>
+  </div>
+  <!-- Modal History -->
+  <div class="modal-history-bg" id="modalHistory" style="display:none;">
+    <div class="modal-history">
+      <div class="modal-history-title">🇮🇩 History Hadiah Kemerdekaan RI Ke-80 🇮🇩</div>
+      <div class="modal-history-row"><span class="modal-history-label">Tanggal</span><span class="modal-history-value" id="historyTanggal"></span></div>
+      <div class="modal-history-row"><span class="modal-history-label">User ID</span><span class="modal-history-value" id="historyUser"></span></div>
+      <div class="modal-history-row"><span class="modal-history-label">Kode Kupon</span><span class="modal-history-value" id="historyKupon"></span></div>
+      <div class="modal-history-row"><span class="modal-history-label">Hasil</span><span class="modal-history-value">Menang<span class="modal-history-prize" id="historyPrize"></span></span></div>
+      <button class="btn-close-history" id="btnCloseHistory">Tutup</button>
+    </div>
+  </div>
+  <script>
+    // ====== PERFORMANCE OPTIMIZATIONS ====== 
+    // Debounce function for performance
+    function debounce(func, wait) {
+      let timeout;
+      return function executedFunction(...args) {
+        const later = () => {
+          clearTimeout(timeout);
+          func(...args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+      };
+    }
+    
+    // RequestAnimationFrame throttle for smooth animations
+    function rafThrottle(func) {
+      let isRunning = false;
+      return function(...args) {
+        if (isRunning) return;
+        isRunning = true;
+        requestAnimationFrame(() => {
+          func.apply(this, args);
+          isRunning = false;
+        });
+      };
+    }
+    
+    // Detect if device might be low-performance
+    const isLowPerformance = () => {
+      return window.innerWidth <= 480 || 
+             navigator.hardwareConcurrency <= 2 || 
+             /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    };
+    
+    // Optimize particles based on device performance
+    const particleCount = isLowPerformance() ? 6 : 12;
+    
+    // Floating particles with Indonesian independence theme
+    for(let i=0;i<particleCount;i++){
+      const p=document.createElement('div');
+      p.className='particle';
+      p.style.width=p.style.height=(Math.random()*12+8)+'px';
+      p.style.left=(Math.random()*100)+'vw';
+      p.style.top=(Math.random()*100)+'vh';
+      p.style.background=`radial-gradient(circle, #${['ffd700','ff0000','fffbe6'][Math.floor(Math.random()*3)]} 0%, transparent 80%)`;
+      p.style.animationDuration=(Math.random()*8+8)+'s';
+      p.style.opacity=Math.random()*0.2+0.12;
+      document.body.appendChild(p);
+    }
+// Prize data (Kemerdekaan RI ke-80) - Full List for Display
+    const daftarHadiah = [
+      { amount: 100000, label: 'MEGA PRIZE 🇮🇩 MERDEKA', icon: `<svg class="prize-icon" viewBox="0 0 44 44"><ellipse cx="22" cy="34" rx="12" ry="6" fill="#fffbe6" opacity="0.18"/><ellipse cx="22" cy="22" rx="15" ry="15" fill="#ffd700" stroke="#ff0000" stroke-width="3"/><ellipse cx="22" cy="22" rx="10" ry="10" fill="#ff0000" stroke="#ffd700" stroke-width="2"/><text x="22" y="26" text-anchor="middle" fill="#ffd700" font-size="8" font-weight="bold">80</text></svg>` },
+      { amount: 50000, label: 'SUPER GARUDA EMAS', icon: `<svg class="prize-icon" viewBox="0 0 44 44"><ellipse cx="22" cy="34" rx="12" ry="6" fill="#fffbe6" opacity="0.18"/><rect x="8" y="14" width="28" height="16" rx="8" fill="#ffd700" stroke="#ff0000" stroke-width="2"/><ellipse cx="22" cy="14" rx="14" ry="8" fill="#ff0000" stroke="#ffd700" stroke-width="1.5"/><path d="M15 20 Q22 25 29 20" stroke="#ffd700" stroke-width="2" fill="none"/></svg>` },
+      { amount: 30000, label: 'SUPER PANCASILA', icon: `<svg class="prize-icon" viewBox="0 0 44 44"><polygon points="22,4 40,16 32,40 12,40 4,16" fill="#ffd700" stroke="#ff0000" stroke-width="2"/><polygon points="22,10 34,18 28,34 16,34 10,18" fill="#ff0000" stroke="#ffd700" stroke-width="1.5"/><circle cx="22" cy="22" r="6" fill="#ffd700"/></svg>` },
+      { amount: 20000, label: 'RARE BHINNEKA', icon: `<svg class="prize-icon" viewBox="0 0 44 44"><ellipse cx="22" cy="34" rx="12" ry="6" fill="#fffbe6" opacity="0.18"/><ellipse cx="22" cy="22" rx="12" ry="12" fill="#ffd700" stroke="#ff0000" stroke-width="2"/><ellipse cx="22" cy="22" rx="8" ry="8" fill="#ff0000" stroke="#ffd700" stroke-width="1.5"/><path d="M16 16 L28 28 M28 16 L16 28" stroke="#ffd700" stroke-width="2"/></svg>` },
+      { amount: 10000, label: 'RARE NUSANTARA', icon: `<svg class="prize-icon" viewBox="0 0 44 44"><ellipse cx="22" cy="34" rx="12" ry="6" fill="#fffbe6" opacity="0.18"/><rect x="10" y="14" width="24" height="16" rx="8" fill="#ffd700" stroke="#ff0000" stroke-width="2"/><ellipse cx="22" cy="14" rx="12" ry="8" fill="#ff0000" stroke="#ffd700" stroke-width="1.5"/><text x="22" y="24" text-anchor="middle" fill="#ffd700" font-size="6" font-weight="bold">🇮🇩</text></svg>` },
+      { amount: 8000, label: 'REGULER DIRGAHAYU', icon: `<svg class="prize-icon" viewBox="0 0 44 44"><polygon points="22,6 38,22 22,38 6,22" fill="#ffd700" stroke="#ff0000" stroke-width="2"/><polygon points="22,12 34,22 22,34 10,22" fill="#ff0000" stroke="#ffd700" stroke-width="1.5"/><circle cx="22" cy="22" r="4" fill="#ffd700"/></svg>` },
+      { amount: 7000, label: 'REGULER PROKLAMASI', icon: `<svg class="prize-icon" viewBox="0 0 44 44"><ellipse cx="22" cy="34" rx="12" ry="6" fill="#fffbe6" opacity="0.18"/><rect x="12" y="16" width="20" height="14" rx="6" fill="#ffd700" stroke="#ff0000" stroke-width="2"/><ellipse cx="22" cy="16" rx="10" ry="6" fill="#ff0000" stroke="#ffd700" stroke-width="1.5"/><text x="22" y="25" text-anchor="middle" fill="#ffd700" font-size="5" font-weight="bold">17</text></svg>` },
+      { amount: 6000, label: 'REGULER AGUSTUS', icon: `<svg class="prize-icon" viewBox="0 0 44 44"><ellipse cx="22" cy="34" rx="12" ry="6" fill="#fffbe6" opacity="0.18"/><ellipse cx="22" cy="22" rx="10" ry="10" fill="#ffd700" stroke="#ff0000" stroke-width="2"/><ellipse cx="22" cy="22" rx="6" ry="6" fill="#ff0000" stroke="#ffd700" stroke-width="1.5"/><text x="22" y="26" text-anchor="middle" fill="#ffd700" font-size="5" font-weight="bold">6</text></svg>` },
+      { amount: 5000, label: 'REGULER INDONESIA', icon: `<svg class="prize-icon" viewBox="0 0 44 44"><polygon points="22,6 38,22 22,38 6,22" fill="#ffd700" stroke="#ff0000" stroke-width="2"/><polygon points="22,12 34,22 22,34 10,22" fill="#ff0000" stroke="#ffd700" stroke-width="1.5"/><rect x="19" y="19" width="6" height="6" fill="#ffd700"/></svg>` },
+      { amount: 4000, label: 'REGULER MERAH PUTIH', icon: `<svg class="prize-icon" viewBox="0 0 44 44"><ellipse cx="22" cy="34" rx="12" ry="6" fill="#fffbe6" opacity="0.18"/><rect x="12" y="16" width="20" height="14" rx="6" fill="#ffd700" stroke="#ff0000" stroke-width="2"/><rect x="12" y="16" width="20" height="7" fill="#ff0000"/><rect x="12" y="23" width="20" height="7" fill="#ffffff"/></svg>` },
+      { amount: 3000, label: 'REGULER BENDERA', icon: `<svg class="prize-icon" viewBox="0 0 44 44"><ellipse cx="22" cy="34" rx="12" ry="6" fill="#fffbe6" opacity="0.18"/><ellipse cx="22" cy="22" rx="15" ry="15" fill="#ffd700" stroke="#ff0000" stroke-width="2"/><ellipse cx="22" cy="22" rx="10" ry="10" fill="#ff0000" stroke="#ffd700" stroke-width="2"/><rect x="18" y="18" width="8" height="8" rx="1" fill="#ffd700"/></svg>` }
+    ];
+    
+    // Kupon A prizes (3K-5K only)
+    const hadiahKuponA = [
+      { amount: 5000, label: 'REGULER INDONESIA', icon: daftarHadiah.find(h => h.amount === 5000).icon },
+      { amount: 4000, label: 'REGULER MERAH PUTIH', icon: daftarHadiah.find(h => h.amount === 4000).icon },
+      { amount: 3000, label: 'REGULER BENDERA', icon: daftarHadiah.find(h => h.amount === 3000).icon }
+    ];
+    
+    // Kupon B prizes (6K-8K only)
+    const hadiahKuponB = [
+      { amount: 8000, label: 'REGULER DIRGAHAYU', icon: daftarHadiah.find(h => h.amount === 8000).icon },
+      { amount: 7000, label: 'REGULER PROKLAMASI', icon: daftarHadiah.find(h => h.amount === 7000).icon },
+      { amount: 6000, label: 'REGULER AGUSTUS', icon: daftarHadiah.find(h => h.amount === 6000).icon }
+    ];
+    
+    // Actual winning prizes (3K-8K only for real wins) - Akan dipilih berdasarkan jenis kupon
+    const hadiahAktual = [
+      { amount: 8000, label: 'REGULER DIRGAHAYU', icon: daftarHadiah.find(h => h.amount === 8000).icon },
+      { amount: 7000, label: 'REGULER PROKLAMASI', icon: daftarHadiah.find(h => h.amount === 7000).icon },
+      { amount: 6000, label: 'REGULER AGUSTUS', icon: daftarHadiah.find(h => h.amount === 6000).icon },
+      { amount: 5000, label: 'REGULER INDONESIA', icon: daftarHadiah.find(h => h.amount === 5000).icon },
+      { amount: 4000, label: 'REGULER MERAH PUTIH', icon: daftarHadiah.find(h => h.amount === 4000).icon },
+      { amount: 3000, label: 'REGULER BENDERA', icon: daftarHadiah.find(h => h.amount === 3000).icon }
+    ];
+
+    // Function to get all prizes - biar Google Sheet yang validasi
+    function getHadiahByKuponType(kupon) {
+      // Return semua hadiah, Google Sheet yang tentuin mana yang valid
+      console.log('MEMBERIKAN SEMUA HADIAH 3K-8K, Google Sheet yang validasi');
+      return hadiahAktual; // Semua hadiah 3K-8K
+    }
+// Indonesian Independence themed gift box icon with better design
+    const mysteryIcon = `<svg class="mystery-icon" viewBox="0 0 44 44">
+      <defs>
+        <linearGradient id="boxGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style="stop-color:#ffd700;stop-opacity:1" />
+          <stop offset="100%" style="stop-color:#ff0000;stop-opacity:1" />
+        </linearGradient>
+        <filter id="glow">
+          <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+          <feMerge> 
+            <feMergeNode in="coloredBlur"/>
+            <feMergeNode in="SourceGraphic"/>
+          </feMerge>
+        </filter>
+      </defs>
+      <ellipse cx="22" cy="38" rx="12" ry="4" fill="#000" opacity="0.2"/>
+      <rect x="6" y="16" width="32" height="20" rx="8" fill="url(#boxGrad)" stroke="#ff0000" stroke-width="2" filter="url(#glow)"/>
+      <rect x="12" y="6" width="20" height="12" rx="6" fill="#fffbe6" stroke="#ffd700" stroke-width="2"/>
+      <rect x="20" y="6" width="4" height="30" rx="2" fill="#ff0000" filter="url(#glow)"/>
+      <text x="22" y="28" text-anchor="middle" fill="#fff" font-size="8" font-weight="bold" filter="url(#glow)">🇮🇩</text>
+      <circle cx="10" cy="10" r="1.5" fill="#ffd700" opacity="0.8"/>
+      <circle cx="34" cy="10" r="1.5" fill="#ffd700" opacity="0.8"/>
+      <circle cx="8" cy="32" r="1.5" fill="#ffd700" opacity="0.8"/>
+      <circle cx="36" cy="32" r="1.5" fill="#ffd700" opacity="0.8"/>
+    </svg>`;
+    
+    // Format angka yang responsive untuk mobile
+    function formatPrize(amount) {
+      if (window.innerWidth <= 360) {
+        // Format super compact untuk mobile tiny: 8K, 7K, etc
+        if (amount >= 1000) {
+          return (amount/1000) + 'K';
+        }
+        return amount.toString();
+      } else if (window.innerWidth <= 480) {
+        // Format compact untuk mobile kecil: 8K, 7K, etc
+        if (amount >= 1000) {
+          return (amount/1000) + 'K';
+        }
+        return amount.toString();
+      } else if (window.innerWidth <= 768) {
+        // Format medium untuk tablet: 8K atau 8.000
+        if (amount >= 1000) {
+          return (amount/1000) + 'K';
+        }
+        return amount.toLocaleString('id-ID');
+      } else {
+        // Format full untuk desktop: Rp 8.000
+        return 'Rp ' + amount.toLocaleString('id-ID');
+      }
+    }
+    
+    // Step 1: Form
+    const formPanel = document.getElementById('formPanel');
+    const gamePanel = document.getElementById('gamePanel');
+    const boxGrid = document.getElementById('boxGrid');
+    const winPopup = document.getElementById('winPopup');
+    const winPrizeText = document.getElementById('winPrizeText');
+    const winTitle = document.getElementById('winTitle');
+    const winPrizeIcon = document.getElementById('winPrizeIcon');
+    const btnShowHistory = document.getElementById('btnShowHistory');
+    const modalHistory = document.getElementById('modalHistory');
+    const historyTanggal = document.getElementById('historyTanggal');
+    const historyUser = document.getElementById('historyUser');
+    const historyKupon = document.getElementById('historyKupon');
+    const historyPrize = document.getElementById('historyPrize');
+    const kuponInput = document.getElementById('kupon');
+    const kuponInfo = document.getElementById('kuponInfo');
+    let boxClicked = false;
+    let shuffledPrizes = [];
+    
+    // Real-time kupon type detection with throttling
+    kuponInput.addEventListener('input', debounce(function() {
+      const kupon = this.value.trim();
+      if (kupon.length === 0) {
+        kuponInfo.textContent = '';
+        return;
+      }
+      
+      // Deteksi berdasarkan database - untuk sementara sembunyikan info
+      kuponInfo.textContent = '';
+    }, 150));
+    let lastResult = null;
+        // Form validation & transition + Google Apps Script integration
+    formPanel.addEventListener('submit', async function(e){
+      e.preventDefault();
+      const userId = document.getElementById('userId').value.trim();
+      const kupon = document.getElementById('kupon').value.trim();
+      if(userId.length < 3 || kupon.length < 3){
+        alert('User ID dan Kode Kupon minimal 3 karakter.');
+        return;
+      }
+      // Reset state agar grid bisa diklik setelah submit baru
+      boxClicked = false;
+      lastResult = null;
+      
+      // TENTUKAN HADIAH BERDASARKAN JENIS KUPON (A atau B)
+      const hadiahPool = getHadiahByKuponType(kupon);
+      const hadiahPasti = hadiahPool[Math.floor(Math.random() * hadiahPool.length)];
+      window.hadiahPasti = hadiahPasti; // SIMPAN HADIAH YANG PASTI KELUAR
+      
+      console.log('KUPON INPUT:', kupon);
+      console.log('HADIAH POOL:', hadiahPool.map(h => h.amount));
+      console.log('HADIAH YANG AKAN KELUAR DAN DIKIRIM KE SHEET:', hadiahPasti.amount, hadiahPasti.label);
+      
+      // LANGSUNG KIRIM KE GOOGLE SHEET SEKARANG
+      // Google Apps Script harus diupdate untuk mendukung:
+      // - Kupon A (kolom C): hadiah 3K-5K, update STATUS A (kolom K) 
+      // - Kupon B (kolom L): hadiah 6K-8K, update STATUS B (kolom N)
+      // - Validasi status "READY" sebelum dipakai
+      // - Update TANGGAL (A/F), USER ID (B/G), HADIAH (D/I)
+      const hadiahValue = hadiahPasti.amount.toString(); // Pastikan string
+      const timestamp = Date.now(); // Anti-cache
+      const url = 'https://script.google.com/macros/s/AKfycby09nNAoOJyw14nSkWLmCZD9afpd1lzqkMuegD_B85wSSZzeG0rT9G5sA-tRJhQtzi_BA/exec'
+        + '?userId=' + encodeURIComponent(userId)
+        + '&kupon=' + encodeURIComponent(kupon)
+        + '&hadiah=' + hadiahValue
+        + '&t=' + timestamp; // Anti-cache parameter
+
+      console.log('===== DEBUG GOOGLE SHEET =====');
+      console.log('URL LENGKAP:', url);
+      console.log('HADIAH YANG AKAN DIKIRIM:', hadiahValue);
+      console.log('TIMESTAMP ANTI-CACHE:', timestamp);
+
+      // Show loading untuk mobile experience yang lebih smooth
+      const submitButton = formPanel.querySelector('button[type="submit"]');
+      const originalText = submitButton.textContent;
+      submitButton.textContent = '⏳ Memproses...';
+      submitButton.disabled = true;
+
+      // Test dengan fetch manual
+      const testUrl = url;
+      console.log('TESTING URL MANUAL:', testUrl);
+
+      try {
+        const res = await fetch(url);
+        const text = await res.text();
+        console.log('GOOGLE SHEET RESPONSE:', text);
+
+        if (text.includes("Selamat")) {
+          // Extract hadiah yang sebenarnya dari response Google Sheet
+          const match = text.match(/Rp\s?([\d.,]+)/);
+          if (match) {
+            const hadiahFromSheet = parseInt(match[1].replace(/[.,]/g, ''));
+            console.log('HADIAH DARI SHEET:', hadiahFromSheet);
+            
+            // Update hadiah yang akan ditampilkan dengan yang dari sheet
+            window.hadiahPasti = {
+              amount: hadiahFromSheet,
+              label: hadiahFromSheet >= 6000 ? 'REGULER DIRGAHAYU' : 'REGULER BENDERA',
+              icon: window.hadiahPasti ? window.hadiahPasti.icon : daftarHadiah.find(h => h.amount === hadiahFromSheet)?.icon || ''
+            };
+            
+            console.log('HADIAH FINAL YANG AKAN DITAMPILKAN:', window.hadiahPasti);
+          }
+          
+          formPanel.style.display = 'none';
+          // Use RAF for smoother transition
+          requestAnimationFrame(() => {
+            setTimeout(() => {
+              gamePanel.style.display = '';
+              // Optimize grid rendering with RAF
+              requestAnimationFrame(() => {
+                renderGrid();
+              });
+            }, 200);
+          });
+        } else if (text.includes("Kupon tidak valid")) {
+          alert('❌ ' + text);
+          // Reset loading state
+          submitButton.textContent = originalText;
+          submitButton.disabled = false;
+        } else {
+          alert(text);
+          // Reset loading state
+          submitButton.textContent = originalText;
+          submitButton.disabled = false;
+        }
+      } catch (err) {
+        alert('Gagal terhubung ke server. Coba lagi.');
+        // Reset loading state
+        submitButton.textContent = originalText;
+        submitButton.disabled = false;
+      }
+    });
+        // Step 2: Render grid
+    function shuffle(arr) {
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    }
+    const zonkIcon = `<svg class="prize-icon" viewBox="0 0 44 44"><circle cx="22" cy="22" r="18" fill="#232a3a" stroke="#ffd700" stroke-width="2"/><ellipse cx="15" cy="18" rx="3" ry="4" fill="#fff"/><ellipse cx="29" cy="18" rx="3" ry="4" fill="#fff"/><circle cx="15" cy="19" r="1.2" fill="#232a3a"/><circle cx="29" cy="19" r="1.2" fill="#232a3a"/><path d="M16 28 Q22 34 28 28" stroke="#fff" stroke-width="2" fill="none"/><rect x="18" y="34" width="8" height="4" rx="2" fill="#ffd700"/></svg>`;
+    function renderGrid(){
+      boxGrid.innerHTML = '';
+      // Hadiah utama: gunakan hasil yang SAMA dengan yang dikirim ke Google Sheet
+      const hadiahUtama = window.hadiahPasti;
+      
+      if (!hadiahUtama) {
+        console.error("ERROR: hadiahPasti tidak ditemukan!");
+        alert("Error: Hadiah tidak ditemukan. Silakan refresh dan coba lagi.");
+        return;
+      }
+      
+      console.log("renderGrid: hadiah utama yang akan ditampilkan:", hadiahUtama.amount, hadiahUtama.label);
+      
+      // Hadiah lain: gunakan daftar lengkap untuk tampilan (tapi yang menang tetap dari hadiahAktual)
+      let hadiahLain = daftarHadiah.filter(h => h.amount !== hadiahUtama.amount);
+      while (hadiahLain.length < 8) {
+        hadiahLain = hadiahLain.concat(daftarHadiah.filter(h => h.amount !== hadiahUtama.amount));
+      }
+      hadiahLain = hadiahLain.slice(0,8);
+      // Acak posisi grid
+      const posisiAcak = Array.from({length: 9}, (_, i) => i);
+      for (let i = posisiAcak.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [posisiAcak[i], posisiAcak[j]] = [posisiAcak[j], posisiAcak[i]];
+      }
+      // shuffledPrizes: hadiah utama di posisi acak, hadiah lain di posisi lain
+      shuffledPrizes = Array(9).fill(null);
+      
+      // Tentukan posisi acak untuk hadiah utama
+      const posisiHadiahUtama = Math.floor(Math.random() * 9);
+      // PASTIKAN hadiah utama menggunakan nilai YANG SAMA dengan yang dikirim ke Google Sheet
+      shuffledPrizes[posisiHadiahUtama] = window.hadiahPasti;
+      
+      // Isi posisi lain dengan hadiah lain
+      let idxLain = 0;
+      for (let i = 0; i < 9; i++) {
+        if (i === posisiHadiahUtama) continue; // Skip posisi hadiah utama
+        shuffledPrizes[i] = hadiahLain[idxLain % hadiahLain.length];
+        idxLain++;
+      }
+      
+      console.log("shuffledPrizes setelah diatur:", shuffledPrizes.map(p => p ? p.amount : 'null'));
+      console.log("Hadiah utama ada di posisi:", posisiHadiahUtama, "dengan nilai:", window.hadiahPasti.amount);
+      console.log("KONSISTENSI CHECK - window.hadiahPasti.amount:", window.hadiahPasti.amount);
+for(let i=0;i<9;i++){
+        const box = document.createElement('div');
+        box.className = 'box';
+        box.tabIndex = 0;
+        box.setAttribute('aria-label', 'Mystery Box');
+        box.innerHTML = mysteryIcon;
+        box.addEventListener('click', ()=>openBox(box, i));
+        box.addEventListener('keydown', (e)=>{if(e.key==='Enter'||e.key===' '){openBox(box,i)}});
+        boxGrid.appendChild(box);
+      }
+      boxClicked = false;
+      btnShowHistory.classList.remove('active');
+    }
+    // Open box
+function openBox(box, idx){
+  if(boxClicked) return;
+  boxClicked = true;
+  
+  // Hadiah utama SELALU menang - ganti box yang diklik dengan hadiah utama
+  const hadiahUtama = window.hadiahPasti;
+  console.log("openBox: User klik box", idx, "hadiah asli:", shuffledPrizes[idx]?.amount);
+  console.log("openBox: Hadiah akan diganti dengan hadiah utama:", hadiahUtama.amount);
+  
+  // Pastikan user selalu menang hadiah utama YANG SAMA dengan yang dikirim ke Google Sheet
+  shuffledPrizes[idx] = window.hadiahPasti;
+  
+  // Animate shine
+  const shine = document.createElement('div');
+  shine.className = 'shine';
+  box.appendChild(shine);
+  // Burst effect
+  const burst = document.createElement('div');
+  burst.className = 'burst';
+  burst.innerHTML = `<svg width="70" height="70" viewBox="0 0 70 70" fill="none">
+    <g>
+      <circle cx="35" cy="35" r="10" fill="#ffd700" opacity="0.7"/>
+      <circle cx="35" cy="10" r="2" fill="#fffbe6"/>
+      <circle cx="35" cy="60" r="2" fill="#fffbe6"/>
+      <circle cx="10" cy="35" r="2" fill="#fffbe6"/>
+      <circle cx="60" cy="35" r="2" fill="#fffbe6"/>
+      <circle cx="20" cy="20" r="1.5" fill="#ffd700"/>
+      <circle cx="50" cy="20" r="1.5" fill="#ffd700"/>
+      <circle cx="20" cy="50" r="1.5" fill="#ffd700"/>
+      <circle cx="50" cy="50" r="1.5" fill="#ffd700"/>
+    </g>
+  </svg>`;
+  box.appendChild(burst);
+  setTimeout(()=>{
+    // Buka box yang diklik dulu (hadiah utama)
+    box.innerHTML = `<div class='mystery-icon'></div><div class='prize-icon'></div><div class='prize-amount-text'></div>`;
+    box.classList.add('opened');
+    box.classList.add('disabled');
+    box.classList.add('selected');
+    box.tabIndex = -1;
+    box.querySelector('.prize-icon').innerHTML = shuffledPrizes[idx].icon;
+    box.querySelector('.mystery-icon').innerHTML = mysteryIcon;
+    box.querySelector('.prize-amount-text').innerHTML = `<span style='font-size:1.1rem;font-weight:900;color:#fffbe6;text-shadow:0 0 10px #ffd700,0 0 4px #0066ff;display:block;text-align:center;'>${formatPrize(shuffledPrizes[idx].amount)}</span>`;
+    
+    console.log('HADIAH YANG DITAMPILKAN DI GAME:', shuffledPrizes[idx].amount);
+    console.log('HADIAH YANG DIKIRIM KE SHEET TADI:', window.hadiahPasti.amount);
+    console.log('APAKAH SAMA?', shuffledPrizes[idx].amount === window.hadiahPasti.amount ? 'YA - BENAR!' : 'TIDAK SAMA - ADA BUG!');
+    console.log('=== FINAL CHECK: HADIAH GAME vs SHEET ===');
+    console.log('GAME:', shuffledPrizes[idx].amount);
+    console.log('SHEET:', window.hadiahPasti.amount);
+    
+    // Animasi buka box lain satu per satu
+    const allBoxes = Array.from(document.querySelectorAll('.box'));
+    let delay = 0;
+    for(let i=0;i<allBoxes.length;i++){
+      if(i===idx) continue;
+      delay += 150;
+      setTimeout(()=>{
+            const b = allBoxes[i];
+            b.innerHTML = `<div class='mystery-icon'></div><div class='prize-icon'></div><div class='prize-amount-text'></div>`;
+            b.classList.add('opened');
+            b.classList.add('disabled');
+            b.tabIndex = -1;
+            if(shuffledPrizes[i]){
+              b.querySelector('.prize-icon').innerHTML = shuffledPrizes[i].icon;
+              b.querySelector('.prize-amount-text').innerHTML = `<span style='font-size:1rem;font-weight:900;color:#fffbe6;text-shadow:0 0 8px #ffd700,0 0 2px #0066ff;display:block;text-align:center;'>${formatPrize(shuffledPrizes[i].amount)}</span>`;
+            }else{
+              b.querySelector('.prize-icon').innerHTML = zonkIcon;
+              b.querySelector('.prize-amount-text').innerHTML = `<span style='font-size:1rem;font-weight:900;color:#ffd700;text-shadow:0 0 8px #ffd700,0 0 2px #232a3a;display:block;text-align:center;'>ZONK</span>`;
+            }
+            b.querySelector('.mystery-icon').innerHTML = mysteryIcon;
+            b.classList.remove('selected');
+            // Animasi shine dan burst untuk setiap box
+            const shine = document.createElement('div');
+            shine.className = 'shine';
+            b.appendChild(shine);
+            const burst = document.createElement('div');
+            burst.className = 'burst';
+            burst.innerHTML = `<svg width="70" height="70" viewBox="0 0 70 70" fill="none">
+              <g>
+                <circle cx="35" cy="35" r="10" fill="#ffd700" opacity="0.7"/>
+                <circle cx="35" cy="10" r="2" fill="#fffbe6"/>
+                <circle cx="35" cy="60" r="2" fill="#fffbe6"/>
+                <circle cx="10" cy="35" r="2" fill="#fffbe6"/>
+                <circle cx="60" cy="35" r="2" fill="#fffbe6"/>
+                <circle cx="20" cy="20" r="1.5" fill="#ffd700"/>
+                <circle cx="50" cy="20" r="1.5" fill="#ffd700"/>
+                <circle cx="20" cy="50" r="1.5" fill="#ffd700"/>
+                <circle cx="50" cy="50" r="1.5" fill="#ffd700"/>
+              </g>
+            </svg>`;
+            b.appendChild(burst);
+            setTimeout(()=>{
+              const burstSVG = b.querySelector('.burst');
+              if(burstSVG) burstSVG.remove();
+            }, 700);
+      }, delay);
+    }
+    // Box yang diklik tetap menampilkan hadiah utama di win popup
+    setTimeout(()=>{
+      // Tidak perlu kirim lagi karena sudah dikirim saat submit form
+      console.log("openBox: Menampilkan hadiah yang sudah dikirim ke Google Sheet:", shuffledPrizes[idx]);
+      
+      showWinPopup(shuffledPrizes[idx]);
+      btnShowHistory.classList.add('active');
+      lastResult = shuffledPrizes[idx];
+    }, delay+400);
+  }, 600);
+}
+                  // Show win popup (Independence theme)
+    function showWinPopup(prize){
+      console.log('showWinPopup: HADIAH YANG AKAN DITAMPILKAN DI POPUP:', prize.amount);
+      winPrizeText.textContent = `Hadiah Kemerdekaan: ${formatPrize(prize.amount)}`;
+      winTitle.innerHTML = `🇮🇩 DIRGAHAYU RI KE-80! 🎁`;
+      winPopup.style.display = 'flex';
+      winPrizeIcon.innerHTML = getExplosionSVG() + prize.icon;
+      animateExplosion();
+    }
+
+    // Show win popup dari Google Apps Script
+    function showWinPopupFromGS(message){
+      winPrizeText.textContent = message;
+      winTitle.innerHTML = `🇮🇩 DIRGAHAYU RI KE-80! 🎁`;
+      winPopup.style.display = 'flex';
+      winPrizeIcon.innerHTML = getExplosionSVG();
+      animateExplosion();
+    }
+
+    // SVG ledakan keren
+    function getExplosionSVG() {
+      return `
+        <svg id="explosionSVG" width="90" height="90" viewBox="0 0 90 90" style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);pointer-events:none;z-index:100;">
+          <g>
+            <circle cx="45" cy="45" r="18" fill="#ffd700" opacity="0.7">
+              <animate attributeName="r" from="0" to="38" dur="0.5s" fill="freeze"/>
+              <animate attributeName="opacity" from="1" to="0" dur="0.7s" fill="freeze"/>
+            </circle>
+            <circle cx="45" cy="15" r="5" fill="#fffbe6">
+              <animate attributeName="r" from="0" to="12" dur="0.5s" fill="freeze"/>
+              <animate attributeName="opacity" from="1" to="0" dur="0.7s" fill="freeze"/>
+            </circle>
+            <circle cx="45" cy="75" r="5" fill="#fffbe6">
+              <animate attributeName="r" from="0" to="12" dur="0.5s" fill="freeze"/>
+              <animate attributeName="opacity" from="1" to="0" dur="0.7s" fill="freeze"/>
+            </circle>
+            <circle cx="15" cy="45" r="5" fill="#fffbe6">
+              <animate attributeName="r" from="0" to="12" dur="0.5s" fill="freeze"/>
+              <animate attributeName="opacity" from="1" to="0" dur="0.7s" fill="freeze"/>
+            </circle>
+            <circle cx="75" cy="45" r="5" fill="#fffbe6">
+              <animate attributeName="r" from="0" to="12" dur="0.5s" fill="freeze"/>
+              <animate attributeName="opacity" from="1" to="0" dur="0.7s" fill="freeze"/>
+            </circle>
+            <circle cx="25" cy="25" r="3.5" fill="#ffd700">
+              <animate attributeName="r" from="0" to="8" dur="0.5s" fill="freeze"/>
+              <animate attributeName="opacity" from="1" to="0" dur="0.7s" fill="freeze"/>
+            </circle>
+            <circle cx="65" cy="25" r="3.5" fill="#ffd700">
+              <animate attributeName="r" from="0" to="8" dur="0.5s" fill="freeze"/>
+              <animate attributeName="opacity" from="1" to="0" dur="0.7s" fill="freeze"/>
+            </circle>
+            <circle cx="25" cy="65" r="3.5" fill="#ffd700">
+              <animate attributeName="r" from="0" to="8" dur="0.5s" fill="freeze"/>
+              <animate attributeName="opacity" from="1" to "0" dur="0.7s" fill="freeze"/>
+            </circle>
+            <circle cx="65" cy="65" r="3.5" fill="#ffd700">
+              <animate attributeName="r" from="0" to="8" dur="0.5s" fill="freeze"/>
+              <animate attributeName="opacity" from="1" to="0" dur="0.7s" fill="freeze"/>
+            </circle>
+          </g>
+        </svg>
+      `;
+    }
+
+    // Optional: Remove SVG after animation
+    function animateExplosion() {
+      setTimeout(()=>{
+        const svg = document.getElementById('explosionSVG');
+        if(svg) svg.remove();
+      }, 800);
+    }
+    // Close win popup on outside click
+    winPopup.addEventListener('click', function(e){
+      if(e.target===winPopup) winPopup.style.display='none';
+    });
+    // Prize list modal
+    const modalPrizeList = document.getElementById('modalPrizeList');
+    document.getElementById('btnPrizeList').onclick = ()=>{modalPrizeList.style.display='flex';};
+    document.getElementById('btnCloseModal').onclick = ()=>{modalPrizeList.style.display='none';};
+    modalPrizeList.addEventListener('click', function(e){
+      if(e.target===modalPrizeList) modalPrizeList.style.display='none';
+    });
+    // Accessibility: close modal with Esc
+    document.addEventListener('keydown', function(e){
+      if(e.key==='Escape'){
+        if(modalPrizeList.style.display==='flex') modalPrizeList.style.display='none';
+        if(winPopup.style.display==='flex') winPopup.style.display='none';
+        if(modalHistory.style.display==='flex') modalHistory.style.display='none';
+      }
+    });
+    // Modal History
+    btnShowHistory.onclick = function(){
+      if(!lastResult) return;
+      const userId = document.getElementById('userId').value.trim();
+      const kupon = document.getElementById('kupon').value.trim();
+      const now = new Date();
+      const tanggal = now.toLocaleDateString('id-ID') + ' ' + now.toLocaleTimeString('id-ID', {hour: '2-digit', minute:'2-digit'});
+      historyTanggal.textContent = tanggal;
+      historyUser.textContent = userId;
+      historyKupon.textContent = kupon;
+      historyPrize.textContent = `Rp ${lastResult.amount.toLocaleString('id-ID')}`;
+      modalHistory.style.display = 'flex';
+    }
+    document.getElementById('btnCloseHistory').onclick = ()=>{modalHistory.style.display='none';};
+    modalHistory.addEventListener('click', function(e){
+      if(e.target===modalHistory) modalHistory.style.display='none';
+    });
+  </script>
+</body>
+</html>

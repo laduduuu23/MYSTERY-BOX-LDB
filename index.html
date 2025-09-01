@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1.0">
-  <title>MYSTERY BOX KEMERDEKAAN LDBPLAY</title>
+  <title>MYSTERY BOX SEPTEMBER CERIA LDBPLAY</title>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800&display=swap" rel="stylesheet">
   <style>
     /* ====== PERFORMA OPTIMALISASI GLOBAL ====== */
@@ -67,16 +67,15 @@
     }
     
     :root {
-      --emerald: #ff0000;
-      --gold: #ffd700;
-      --gold-shimmer: #fffbe6;
-      --casino-bg: url('https://images.unsplash.com/photo-1587320985030-be12e4c4c4eb');
-      --box-size: min(120px, 22vw);
-      --box-gap: 2vw;
-      --font-main: 'Montserrat', Arial, sans-serif;
-      --independence-red: #ff0000;
-      --independence-white: #ffffff;
-      --royal-gold: #ffd700;
+  --primary-blue: #1976d2;
+  --secondary-blue: #0d47a1;
+  --accent-blue: #00c6ff;
+  --soft-blue: #e3f2fd;
+  --blue-glow: #00c6ff44;
+  --blue-shadow: 0 0 32px 8px #00c6ff33, 0 0 16px 4px #1976d244;
+  --box-size: min(120px, 22vw);
+  --box-gap: 2vw;
+  --font-main: 'Montserrat', Arial, sans-serif;
     }
     html, body {
       height: 100%;
@@ -84,37 +83,22 @@
       padding: 0;
       font-family: var(--font-main);
       min-height: 100vh;
-      background: 
-        /* Background gambar Indonesia dari folder lokal */
-        url("vecteezy_hand-with-indonesian-flag-color-and-silhouette-of-war-plane_9274650-1.jpg") center/cover no-repeat fixed;
+  background: linear-gradient(120deg, var(--primary-blue) 0%, var(--accent-blue) 100%, #fff 180%);
       position: relative;
       overflow-x: hidden;
     }
     body::before {
-      /* Epic Indonesian Independence Overlay - Kemerdekaan 80 Tahun */
       content: "";
       position: fixed;
       z-index: 0;
       inset: 0;
       pointer-events: none;
-      background: 
-        /* Cinematic vignette with Indonesian colors */
-        radial-gradient(ellipse at center, transparent 0%, transparent 30%, rgba(255,0,0,0.1) 60%, rgba(0,0,0,0.4) 100%),
-        /* Garuda wings light effects */
-        radial-gradient(circle at 50% 20%, rgba(255, 215, 0, 0.25) 0%, transparent 40%),
-        radial-gradient(circle at 25% 40%, rgba(255, 0, 0, 0.15) 0%, transparent 35%),
-        radial-gradient(circle at 75% 60%, rgba(255, 255, 255, 0.12) 0%, transparent 30%),
-        /* Traditional batik pattern texture */
-        url("data:image/svg+xml,%3Csvg width='200' height='200' xmlns='http://www.w3.org/2000/svg'%3E%3Cdefs%3E%3Cpattern id='batik' x='0' y='0' width='40' height='40' patternUnits='userSpaceOnUse'%3E%3Ccircle cx='20' cy='20' r='8' fill='none' stroke='%23ffd700' stroke-width='0.5' opacity='0.3'/%3E%3Cpath d='M10 10 Q20 5 30 10 Q25 20 30 30 Q20 35 10 30 Q15 20 10 10' fill='none' stroke='%23ffffff' stroke-width='0.3' opacity='0.2'/%3E%3C/pattern%3E%3C/defs%3E%3Crect width='200' height='200' fill='url(%23batik)'/%3E%3C/svg%3E"),
-        /* Subtle Indonesian texture overlay */
-        url("data:image/svg+xml,%3Csvg width='150' height='150' xmlns='http://www.w3.org/2000/svg'%3E%3Cdefs%3E%3Cpattern id='indonesia' x='0' y='0' width='6' height='6' patternUnits='userSpaceOnUse'%3E%3Ccircle cx='3' cy='3' r='1' fill='%23ff0000' opacity='0.05'/%3E%3Crect x='1' y='1' width='4' height='2' fill='%23ffffff' opacity='0.03'/%3E%3C/pattern%3E%3C/defs%3E%3Crect width='150' height='150' fill='url(%23indonesia)'/%3E%3C/svg%3E");
-      opacity: 0.9;
-      /* Optimalisasi animasi untuk performa lebih baik */
-      animation: indonesianBreathing 30s ease-in-out infinite, kemerdekaan80 40s linear infinite;
-      /* Hardware acceleration */
+  background: linear-gradient(120deg, var(--primary-blue) 0%, var(--accent-blue) 100%, #fff 180%);
+  opacity: 0.93;
+  filter: blur(0.5px) brightness(1.08);
+      animation: cinematicBreathing 30s ease-in-out infinite;
       transform: translateZ(0);
-      will-change: auto; /* Changed from specific properties to auto for better performance */
-      /* Additional performance optimization */
+      will-change: auto;
       contain: layout style paint;
       -webkit-backface-visibility: hidden;
       backface-visibility: hidden;
@@ -296,9 +280,9 @@
     }
     /* Step 1: Form */
     .form-panel {
-      background: rgba(24,28,42,0.55);
+      background: rgba(33, 150, 243, 0.15);
       border-radius: 28px;
-      box-shadow: 0 0 16px 2px #ff000044;
+      box-shadow: 0 0 16px 2px #2196f344;
       padding: 44px 32px 36px 32px;
       max-width: 400px;
       width: 100%;
@@ -307,48 +291,34 @@
       flex-direction: column;
       align-items: center;
       position: relative;
-      border: 2.5px solid #ff0000;
+      border: 2.5px solid #2196f3;
       box-sizing: border-box;
       backdrop-filter: blur(10px);
       animation: fadeInUp .7s cubic-bezier(.4,2,.3,1);
-      filter: drop-shadow(0 0 16px #ff000033);
+      filter: drop-shadow(0 0 16px #2196f333);
     }
     @keyframes fadeInUp {
       0% { opacity: 0; transform: translateY(40px);}
       100% { opacity: 1; transform: translateY(0);}
     }
     .form-title {
-      font-family: var(--font-main);
-      font-size: 2.1rem;
-      font-weight: 800;
-      letter-spacing: 1.5px;
-      text-align: center;
-      margin-bottom: 30px;
-      background: linear-gradient(45deg, #ff0000 0%, #ffd700 50%, #ff0000 100%);
-      -webkit-background-clip: text;
-      background-clip: text;
-      -webkit-text-fill-color: transparent;
-      text-shadow: 0 0 10px #ff0000, 0 0 5px #ffd700;
-      animation: titleGlow 3s ease-in-out infinite;
-      position: relative;
-    }
-    .form-title::before {
-      content: "🇮🇩";
-      position: absolute;
-      left: -40px;
-      top: 50%;
-      transform: translateY(-50%);
-      font-size: 1.5rem;
-      animation: flagWave 2s ease-in-out infinite;
-    }
-    .form-title::after {
-      content: "🇮🇩";
-      position: absolute;
-      right: -40px;
-      top: 50%;
-      transform: translateY(-50%);
-      font-size: 1.5rem;
-      animation: flagWave 2s ease-in-out infinite 1s;
+  font-family: var(--font-main);
+  font-size: 2.7rem;
+  font-weight: 900;
+  letter-spacing: 2.5px;
+  text-align: center;
+  margin-bottom: 36px;
+  background: linear-gradient(90deg, #00c6ff 0%, #1976d2 60%, #0d47a1 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  /* Hapus shadow dan filter biar clean */
+  /* text-shadow: none; */
+  /* filter: none; */
+  animation: none;
+  position: relative;
+  text-transform: uppercase;
+  letter-spacing: 3px;
     }
     @keyframes titleGlow {
       0%, 100% { text-shadow: 0 0 10px #ff0000, 0 0 5px #ffd700; }
@@ -368,20 +338,20 @@
     .form-label {
       font-size: 1.08rem;
       font-weight: 700;
-      color: #fff;
+      color: var(--primary-blue);
       margin-bottom: 7px;
-      text-shadow: 0 0 2px #ff0000;
+      text-shadow: 0 0 2px var(--accent-blue);
     }
     .form-input {
       width: 100%;
       padding: 14px 10px;
       border-radius: 14px;
-      border: 2px solid #ff0000;
-      background: #181c2aee;
-      color: #fff;
+      border: 2px solid var(--primary-blue);
+      background: #e3f2fd;
+      color: #1565c0;
       font-size: 1.08rem;
       font-weight: 700;
-      box-shadow: inset 0 2px 12px 0 #003a2b99;
+      box-shadow: inset 0 2px 12px 0 #90caf9;
       outline: none;
       transition: border-color .18s, box-shadow .18s;
       margin-bottom: 0;
@@ -393,73 +363,73 @@
       letter-spacing: 1px;
     }
     .form-input:focus {
-      border-color: #ffd700;
-      box-shadow: 0 0 12px 2px #ffd70044;
-      background: #232a3a;
+      border-color: var(--accent-blue);
+      box-shadow: 0 0 12px 2px #64b5f644;
+      background: #bbdefb;
       transition: box-shadow .18s, border-color .18s;
     }
     .btn-main {
       width: 100%;
       padding: 15px 0;
       border-radius: 14px;
-      background: linear-gradient(90deg, #ff0000 0%, #ffd700 100%);
+      background: linear-gradient(90deg, var(--primary-blue) 0%, var(--accent-blue) 100%);
       color: #fff;
       font-size: 1.13rem;
       font-weight: 800;
       text-transform: uppercase;
       letter-spacing: 2px;
       border: none;
-      box-shadow: 0 0 16px 4px #ff000044;
+      box-shadow: 0 0 16px 4px #2196f344;
       cursor: pointer;
       transition: box-shadow .18s, transform .18s;
       margin-top: 10px;
       outline: none;
     }
     .btn-main:hover, .btn-main:focus {
-      box-shadow: 0 0 32px 8px #ffd70044, 0 0 8px 2px #ff000044;
+      box-shadow: 0 0 32px 8px #64b5f644, 0 0 8px 2px #2196f344;
       transform: scale(1.04);
-      color: #ffd700;
-      background: linear-gradient(90deg, #ffd700 0%, #ff0000 100%);
+      color: #64b5f6;
+      background: linear-gradient(90deg, var(--accent-blue) 0%, var(--primary-blue) 100%);
     }
     /* Step 2: Grid */
     .game-panel {
-      background: rgba(24,28,42,0.55);
-      border-radius: 28px;
-      box-shadow: 0 0 16px 2px #ff000044;
-      padding: 36px 20px 28px 20px;
-      max-width: 500px;
-      width: 100%;
-      margin: 0 auto;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      position: relative;
-      border: 2.5px solid #ffd70088;
-      box-sizing: border-box;
-      backdrop-filter: blur(10px);
-      animation: fadeInUp .7s cubic-bezier(.4,2,.3,1);
-      filter: drop-shadow(0 0 16px #ffd70022);
+  background: linear-gradient(135deg, #e3f2fd 0%, #1976d2 100%);
+  border-radius: 28px;
+  box-shadow: 0 0 32px 8px #00c6ff33, 0 0 16px 4px #1976d244;
+  padding: 36px 20px 28px 20px;
+  max-width: 500px;
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  border: 2.5px solid #00c6ff88;
+  box-sizing: border-box;
+  backdrop-filter: blur(10px) saturate(1.2);
+  animation: fadeInUp .7s cubic-bezier(.4,2,.3,1);
+  filter: drop-shadow(0 0 24px #00c6ff33);
     }
     .prize-list-btn {
-      display: inline-block;
-      margin-bottom: 18px;
-      padding: 10px 24px;
-      font-size: 1.05rem;
-      font-weight: 800;
-      border-radius: 12px;
-      background: linear-gradient(90deg, #ffd700 0%, #ff0000 100%);
-      color: #fff;
-      box-shadow: 0 0 8px 2px #ffd70022;
-      border: none;
-      cursor: pointer;
-      transition: box-shadow .18s, transform .18s;
-      outline: none;
-      text-shadow: 0 0 2px #ff0000;
+  display: inline-block;
+  margin-bottom: 18px;
+  padding: 10px 24px;
+  font-size: 1.08rem;
+  font-weight: 900;
+  border-radius: 14px;
+  background: linear-gradient(90deg, #00c6ff 0%, #1976d2 100%);
+  color: #fff;
+  box-shadow: 0 0 16px 4px #00c6ff44;
+  border: none;
+  cursor: pointer;
+  transition: box-shadow .18s, transform .18s;
+  outline: none;
+  text-shadow: 0 0 4px #00c6ff;
     }
     .prize-list-btn:hover {
-      box-shadow: 0 0 16px 4px #ff000044, 0 0 8px 2px #ffd70044;
-      color: #ffd700;
-      transform: scale(1.03);
+  box-shadow: 0 0 32px 8px #00c6ff66, 0 0 12px 2px #1976d244;
+  color: #00c6ff;
+  transform: scale(1.06);
     }
     .grid {
       display: grid;
@@ -473,27 +443,27 @@
       position: relative;
     }
     .box {
-      width: var(--box-size);
-      height: var(--box-size);
-      background: linear-gradient(135deg, #ff0000 0%, #ffd700 100%);
-      border-radius: 12px;
-      box-shadow: 0 0 12px 2px #ff000044;
-      border: 2.5px solid #ffd70044;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 2.1rem;
-      font-weight: 900;
-      color: #fff;
-      cursor: pointer;
-      position: relative;
-      overflow: hidden;
-      transition: box-shadow .18s, transform .18s, filter .18s;
-      filter: drop-shadow(0 0 8px #ffd70022);
-      user-select: none;
-      outline: none;
-      z-index: 2;
-      animation: boxPop .7s cubic-bezier(.4,2,.3,1);
+  width: var(--box-size);
+  height: var(--box-size);
+  background: linear-gradient(135deg, #00c6ff 0%, #1976d2 80%, #e3f2fd 100%);
+  border-radius: 16px;
+  box-shadow: 0 0 24px 6px #00c6ff44, 0 0 8px 2px #1976d244;
+  border: 2.5px solid #00c6ff88;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.1rem;
+  font-weight: 900;
+  color: #fff;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: box-shadow .18s, transform .18s, filter .18s;
+  filter: drop-shadow(0 0 12px #00c6ff33);
+  user-select: none;
+  outline: none;
+  z-index: 2;
+  animation: boxPop .7s cubic-bezier(.4,2,.3,1);
     }
     @keyframes boxPop {
       0% { opacity: 0; transform: scale(0.7);}
@@ -1467,20 +1437,13 @@
   </style>
 </head>
 <body>
-  <!-- Enhanced Indonesian Independence Floating Elements -->
+  <!-- Floating Ceria Elements -->
   <div class="floating-symbols">
-    <div class="symbol garuda" style="top: 10%; left: 5%; animation-delay: 0s;">🦅</div>
-    <div class="symbol flag" style="top: 15%; left: 85%; animation-delay: 2s;">🇮🇩</div>
-    <div class="symbol star" style="top: 25%; left: 10%; animation-delay: 4s;">⭐</div>
-    <div class="symbol flame" style="top: 35%; left: 90%; animation-delay: 1s;">🔥</div>
-    <div class="symbol rice" style="top: 45%; left: 8%; animation-delay: 3s;">🌾</div>
-    <div class="symbol chain" style="top: 55%; left: 88%; animation-delay: 5s;">⛓️</div>
-    <div class="symbol tree" style="top: 65%; left: 12%; animation-delay: 2.5s;">🌳</div>
-    <div class="symbol wheel" style="top: 75%; left: 85%; animation-delay: 4.5s;">⚙️</div>
-    <div class="symbol bull" style="top: 80%; left: 15%; animation-delay: 1.5s;">🐂</div>
-    <div class="symbol independence" style="top: 20%; left: 50%; animation-delay: 3.5s;">80</div>
-    <div class="symbol year" style="top: 70%; left: 45%; animation-delay: 0.5s;">1945</div>
-    <div class="symbol year" style="top: 30%; left: 55%; animation-delay: 2.8s;">2025</div>
+    <div class="symbol star" style="top: 20%; left: 10%; animation-delay: 2s; color:#00c6ff;">💎</div>
+    <div class="symbol star" style="top: 40%; left: 80%; animation-delay: 3s; color:#1976d2;">✨</div>
+    <div class="symbol star" style="top: 60%; left: 30%; animation-delay: 1.5s; color:#64b5f6;">💠</div>
+    <div class="symbol star" style="top: 75%; left: 60%; animation-delay: 2.5s; color:#00c6ff;">�</div>
+    <div class="symbol star" style="top: 30%; left: 50%; animation-delay: 4s; color:#1976d2;">🔹</div>
   </div>
   
   <!-- Enhanced Indonesian Independence Cinematic Elements -->
@@ -1546,157 +1509,9 @@
         <path d="M100% 0 L100% 100% L80% 100% L90% 0 Z" fill="url(#light-ray)"/>
       </g>
       
-      <!-- Floating Patriotic Elements -->
-      <g opacity="0.2">
-        <!-- Indonesian Independence Symbols with 80th Anniversary -->
-        <g transform="translate(10%, 30%)">
-          <polygon points="0,-6 2,2 8,2 3,5 5,12 0,8 -5,12 -3,5 -8,2 -2,2" fill="#ffd700"/>
-          <text x="0" y="20" text-anchor="middle" fill="#ff0000" font-size="8" font-weight="bold">80</text>
-          <animateTransform attributeName="transform" type="translate" 
-                           values="10% 30%; 15% 25%; 10% 30%" dur="8s" repeatCount="indefinite"/>
-        </g>
-        
-        <g transform="translate(90%, 60%)">
-          <circle cx="0" cy="0" r="4" fill="none" stroke="#ff0000" stroke-width="1"/>
-          <text x="0" y="15" text-anchor="middle" fill="#ffd700" font-size="6" font-weight="bold">RI</text>
-          <animateTransform attributeName="transform" type="translate" 
-                           values="90% 60%; 85% 65%; 90% 60%" dur="10s" repeatCount="indefinite"/>
-        </g>
-        
-        <!-- Traditional Diamond Pattern with Indonesian Elements -->
-        <g transform="translate(30%, 80%)">
-          <path d="M0,-5 L5,0 L0,5 L-5,0 Z" fill="#ffffff"/>
-          <circle cx="0" cy="0" r="2" fill="#ff0000"/>
-          <animateTransform attributeName="transform" type="translate" 
-                           values="30% 80%; 35% 75%; 30% 80%" dur="12s" repeatCount="indefinite"/>
-        </g>
-        
-        <g transform="translate(70%, 20%)">
-          <path d="M0,-5 L5,0 L0,5 L-5,0 Z" fill="#ffd700"/>
-          <text x="0" y="12" text-anchor="middle" fill="#ff0000" font-size="5" font-weight="bold">17</text>
-          <animateTransform attributeName="transform" type="translate" 
-                           values="70% 20%; 65% 25%; 70% 20%" dur="9s" repeatCount="indefinite"/>
-        </g>
-        
-        <!-- Additional Indonesian Elements -->
-        <g transform="translate(50%, 15%)">
-          <text x="0" y="0" text-anchor="middle" fill="#ffd700" font-size="16" font-weight="bold" opacity="0.7">MERDEKA</text>
-          <animateTransform attributeName="transform" type="translate" 
-                           values="50% 15%; 55% 10%; 50% 15%" dur="15s" repeatCount="indefinite"/>
-        </g>
-        
-        <g transform="translate(25%, 50%)">
-          <!-- Indonesian Eagle Wings -->
-          <path d="M-15,-5 Q-25,-10 -30,-5 Q-25,0 -15,2 M15,-5 Q25,-10 30,-5 Q25,0 15,2" stroke="#ffd700" stroke-width="2" fill="none"/>
-          <circle cx="0" cy="0" r="3" fill="#ff0000"/>
-          <animateTransform attributeName="transform" type="translate" 
-                           values="25% 50%; 30% 45%; 25% 50%" dur="11s" repeatCount="indefinite"/>
-        </g>
-        
-        <g transform="translate(80%, 80%)">
-          <text x="0" y="0" text-anchor="middle" fill="#ffffff" font-size="12" font-weight="bold" opacity="0.8">1945</text>
-          <animateTransform attributeName="transform" type="translate" 
-                           values="80% 80%; 75% 85%; 80% 80%" dur="13s" repeatCount="indefinite"/>
-        </g>
-      }
-    </svg>
-  </div>
-  <!-- Floating Particles -->
-  <script>
-    // Enhanced floating particles with Indonesian independence theme
-    for(let i=0;i<15;i++){
-      const p=document.createElement('div');
-      p.className='particle';
-      p.style.width=p.style.height=(Math.random()*15+10)+'px';
-      p.style.left=(Math.random()*100)+'vw';
-      p.style.top=(Math.random()*100)+'vh';
-      
-      const colors = ['ffd700', 'ff0000', 'fffbe6', 'ffffff'];
-      const selectedColor = colors[Math.floor(Math.random()*colors.length)];
-      p.style.background=`radial-gradient(circle, #${selectedColor} 0%, transparent 70%)`;
-      p.style.animationDuration=(Math.random()*10+8)+'s';
-      p.style.opacity=Math.random()*0.3+0.15;
-      p.style.boxShadow = `0 0 ${Math.random()*10+5}px #${selectedColor}`;
-      document.body.appendChild(p);
-    }
-    
-    // Enhanced Indonesian flag particles
-    for(let i=0;i<12;i++){
-      const flag=document.createElement('div');
-      flag.className='flag-particle';
-      flag.style.width='24px';
-      flag.style.height='16px';
-      flag.style.left=(Math.random()*100)+'vw';
-      flag.style.top='110vh';
-      flag.style.background='linear-gradient(to bottom, #ff0000 0%, #ff0000 50%, #ffffff 50%, #ffffff 100%)';
-      flag.style.animationDuration=(Math.random()*8+12)+'s';
-      flag.style.animationDelay=(Math.random()*5)+'s';
-      flag.style.borderRadius='3px';
-      flag.style.border='1px solid #ffd700';
-      flag.style.boxShadow='0 0 8px rgba(255, 215, 0, 0.6)';
-      document.body.appendChild(flag);
-    }
-    
-    // Enhanced Indonesian independence sparkles (cinematic traditional symbols)
-    for(let i=0;i<18;i++){
-      const symbol=document.createElement('div');
-      symbol.className='independence-sparkle';
-      symbol.style.width='14px';
-      symbol.style.height='14px';
-      symbol.style.left=(Math.random()*100)+'vw';
-      symbol.style.top='110vh';
-      symbol.style.animationDuration=(Math.random()*10+15)+'s';
-      symbol.style.animationDelay=(Math.random()*8)+'s';
-      symbol.style.borderRadius='50%';
-      
-      // Cinematic Indonesian symbols with glow effects
-      const cinematicSymbols = [
-        // Patriotic Star with Glow
-        `background: radial-gradient(circle, #ffd700 20%, #ffff00 70%); clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%); box-shadow: 0 0 12px #ffd700, 0 0 6px #ffff00;`,
-        // Red Circle (Unity Symbol)
-        `background: radial-gradient(circle, #ff0000 30%, #ff4444 80%); border-radius: 50%; box-shadow: 0 0 10px #ff0000, 0 0 5px #ff4444;`,
-        // Golden Diamond (Archipelago)
-        `background: linear-gradient(45deg, #ffd700 0%, #ffff00 100%); transform: rotate(45deg); border-radius: 3px; box-shadow: 0 0 8px #ffd700, 0 0 4px #ffff00;`,
-        // Patriotic Burst
-        `background: radial-gradient(circle, #ff0000 20%, #ffd700 50%, #ffffff 80%); border-radius: 50%; box-shadow: 0 0 10px #ff0000, 0 0 8px #ffd700;`,
-        // White Purity Symbol  
-        `background: radial-gradient(circle, #ffffff 40%, #f0f0f0 80%); border-radius: 50%; box-shadow: 0 0 8px #ffffff, 0 0 4px #f0f0f0;`
-      ];
-      
-      symbol.style.cssText += cinematicSymbols[Math.floor(Math.random() * cinematicSymbols.length)];
-      document.body.appendChild(symbol);
-    }
-    
-    // Cinematic Wind Effect Particles
-    for(let i=0;i<8;i++){
-      const wind=document.createElement('div');
-      wind.className='wind-particle';
-      wind.style.width='60px';
-      wind.style.height='2px';
-      wind.style.left='-10vw';
-      wind.style.top=(Math.random()*60+20)+'vh';
-      wind.style.background='linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.4) 50%, transparent 100%)';
-      wind.style.animationDuration=(Math.random()*10+20)+'s';
-      wind.style.animationDelay=(Math.random()*5)+'s';
-      wind.style.borderRadius='1px';
-      wind.style.boxShadow='0 0 4px rgba(255,255,255,0.3)';
-      document.body.appendChild(wind);
-    }
-  </script>
-  <!-- Top Right Social Icons -->
-  <div class="corner-icons">
-    <a href="https://klikblg.com/wa-ldb
-" target="_blank" class="corner-icon" title="WhatsApp">
-      <!-- WhatsApp SVG -->
-      <svg width="26" height="26" viewBox="0 0 32 32" fill="none">
-        <circle cx="16" cy="16" r="16" fill="#25D366"/>
-        <path d="M24.5 21.5c-1.1.5-2.3.8-3.5.8-4.4 0-8-3.6-8-8 0-1.2.3-2.4.8-3.5l-2.3-2.3C9.1 9.7 8 12.7 8 16c0 5.5 4.5 10 10 10 3.3 0 6.3-1.1 8.5-3l-2.3-2.3z" fill="#fff"/>
-        <path d="M16 8c4.4 0 8 3.6 8 8 0 1.2-.3 2.4-.8 3.5l2.3 2.3C22.9 22.3 19.9 23.5 16 23.5c-5.5 0-10-4.5-10-10 0-3.3 1.1-6.3 3-8.5l2.3 2.3C13.6 8.3 14.8 8 16 8z" fill="#fff"/>
-      </svg>
-    </a>
-    <a href="https://klikblg.com/cuanldbplay" target="_blank" class="corner-icon" title="Telegram">
-      <!-- Telegram SVG -->
-      <svg width="26" height="26" viewBox="0 0 32 32" fill="none">
+      <!-- Background Ceria Modern -->
+      <div class="ceria-decoration"></div>
+
         <circle cx="16" cy="16" r="16" fill="#0088cc"/>
         <path d="M24.7 9.3c-.2-.2-.5-.2-.7-.1l-15 6c-.3.1-.5.4-.5.7s.2.6.5.7l3.7 1.2 1.2 3.7c.1.3.4.5.7.5.1 0 .2 0 .3-.1l6-15c.1-.2.1-.5-.1-.7zm-7.2 12.1-1-3.1 7.1-7.1-6.1 10.2zm-2.1-2.1-3.1-1 10.2-6.1-7.1 7.1z" fill="#fff"/>
       </svg>
@@ -1705,7 +1520,7 @@
   <div class="main-center">
     <!-- Step 1: Form -->
     <form class="form-panel" id="formPanel" autocomplete="off">
-      <div class="form-title">MYSTERY BOX KEMERDEKAAN RI KE-80</div>
+  <div class="form-title">MYSTERY BOX<br>SEPTEMBER CERIA<br><span style="font-size:1.1rem;font-weight:700;letter-spacing:1.5px;display:block;margin-top:8px;color:#1976d2;">Buka Box-nya, Bawa Pulang Kejutan!</span></div>
       <div class="form-group">
         <label class="form-label" for="userId">User ID</label>
         <input class="form-input" id="userId" name="userId" type="text" placeholder="Masukkan User ID" required maxlength="32" autocomplete="off">
@@ -1719,15 +1534,15 @@
     </form>
     <!-- Step 2: Game -->
     <div class="game-panel" id="gamePanel" style="display:none;">
-      <button class="prize-list-btn" id="btnPrizeList"> 🇩 Lihat Hadiah Kemerdekaan</button>
+  <button class="prize-list-btn" id="btnPrizeList"> � Lihat Hadiah September Ceria</button>
       <div class="grid" id="boxGrid"></div>
-      <button class="btn-show-history" id="btnShowHistory">Tampilkan History Kemerdekaan</button>
+  <button class="btn-show-history" id="btnShowHistory">Tampilkan History September Ceria</button>
     </div>
   </div>
   <!-- Prize Modal -->
   <div class="modal-bg" id="modalPrizeList" style="display:none;">
     <div class="modal">
-      <div class="modal-title">🇮🇩 Daftar Hadiah Kemerdekaan RI Ke-80 🇮🇩</div>
+    <div class="modal-title">� Daftar Hadiah September Ceria �</div>
       <table class="modal-table">
         <thead>
           <tr>
@@ -1736,17 +1551,17 @@
           </tr>
         </thead>
         <tbody>
-          <tr><td class="prize-amount">Rp 100.000</td><td class="prize-label">MEGA PRIZE 🇮🇩 MERDEKA</td></tr>
-          <tr><td class="prize-amount">Rp 50.000</td><td class="prize-label">SUPER GARUDA EMAS</td></tr>
-          <tr><td class="prize-amount">Rp 30.000</td><td class="prize-label">SUPER PANCASILA</td></tr>
-          <tr><td class="prize-amount">Rp 20.000</td><td class="prize-label">RARE BHINNEKA</td></tr>
-          <tr><td class="prize-amount">Rp 10.000</td><td class="prize-label">RARE NUSANTARA</td></tr>
-          <tr><td class="prize-amount">Rp 8.000</td><td class="prize-label">REGULER DIRGAHAYU</td></tr>
-          <tr><td class="prize-amount">Rp 7.000</td><td class="prize-label">REGULER PROKLAMASI</td></tr>
-          <tr><td class="prize-amount">Rp 6.000</td><td class="prize-label">REGULER AGUSTUS</td></tr>
-          <tr><td class="prize-amount">Rp 5.000</td><td class="prize-label">REGULER INDONESIA</td></tr>
-          <tr><td class="prize-amount">Rp 4.000</td><td class="prize-label">REGULER MERAH PUTIH</td></tr>
-          <tr><td class="prize-amount">Rp 3.000</td><td class="prize-label">REGULER BENDERA</td></tr>
+          <tr><td class="prize-amount">Rp 100.000</td><td class="prize-label">MEGA PRIZE CERIA</td></tr>
+          <tr><td class="prize-amount">Rp 50.000</td><td class="prize-label">SUPER CERIA</td></tr>
+          <tr><td class="prize-amount">Rp 30.000</td><td class="prize-label">HADIAH BIRU</td></tr>
+          <tr><td class="prize-amount">Rp 20.000</td><td class="prize-label">RARE CERIA</td></tr>
+          <tr><td class="prize-amount">Rp 10.000</td><td class="prize-label">RARE SEPTEMBER</td></tr>
+          <tr><td class="prize-amount">Rp 8.000</td><td class="prize-label">REGULER CERIA</td></tr>
+          <tr><td class="prize-amount">Rp 7.000</td><td class="prize-label">REGULER BIRU</td></tr>
+          <tr><td class="prize-amount">Rp 6.000</td><td class="prize-label">REGULER SEPTEMBER</td></tr>
+          <tr><td class="prize-amount">Rp 5.000</td><td class="prize-label">REGULER CERIA MINI</td></tr>
+          <tr><td class="prize-amount">Rp 4.000</td><td class="prize-label">REGULER MINI BIRU</td></tr>
+          <tr><td class="prize-amount">Rp 3.000</td><td class="prize-label">REGULER MINI CERIA</td></tr>
         </tbody>
       </table>
       <button class="btn-close-modal" id="btnCloseModal">Tutup</button>
@@ -1756,15 +1571,15 @@
   <div class="win-popup-bg" id="winPopup" style="display:none;">
     <div class="win-popup">
       <div class="prize-icon" id="winPrizeIcon"></div>
-      <div class="win-title" id="winTitle">🇮🇩 DIRGAHAYU RI KE-80! 🎁</div>
+  <div class="win-title" id="winTitle">� SEPTEMBER CERIA! 🎁</div>
       <div class="win-prize" id="winPrizeText"></div>
-      <a href="https://klikblg.com/cuanldbplay" target="_blank" class="btn-claim">CLAIM HADIAH MERDEKA</a>
+  <a href="https://klikblg.com/cuanldbplay" target="_blank" class="btn-claim">CLAIM HADIAH CERIA</a>
     </div>
   </div>
   <!-- Modal History -->
   <div class="modal-history-bg" id="modalHistory" style="display:none;">
     <div class="modal-history">
-      <div class="modal-history-title">🇮🇩 History Hadiah Kemerdekaan RI Ke-80 🇮🇩</div>
+  <div class="modal-history-title">� History Hadiah September Ceria �</div>
       <div class="modal-history-row"><span class="modal-history-label">Tanggal</span><span class="modal-history-value" id="historyTanggal"></span></div>
       <div class="modal-history-row"><span class="modal-history-label">User ID</span><span class="modal-history-value" id="historyUser"></span></div>
       <div class="modal-history-row"><span class="modal-history-label">Kode Kupon</span><span class="modal-history-value" id="historyKupon"></span></div>
